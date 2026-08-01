@@ -119,17 +119,25 @@ a { color: var(--accent-ink); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
 }
 
 .brand {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 600;
-  font-size: 1.4rem;
-  text-decoration: none;
-  color: var(--text);
-  letter-spacing: -.01em;
+  display: block;
+  line-height: 0;
+}
+
+.brand-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.brand-logo.logo-dark { display: none; }
+
+@media (prefers-color-scheme: dark) {
+  .brand-logo.logo-light { display: none; }
+  .brand-logo.logo-dark { display: block; }
 }
 
 .tagline {
