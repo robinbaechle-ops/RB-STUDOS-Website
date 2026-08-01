@@ -95,6 +95,23 @@ async function drawPreview(product) {
   }
 }
 
+function collectOrder(product) {
+  const values = {};
+  for (const field of product.fields) {
+    if (field.type === "text") {
+      values[field.id] = document.getElementById(field.id).value.trim();
+    } else if (field.type === "image") {
+      const img = uploadedImages[field.id];
+      values[field.id] = img ? img.src : null;
+    }
+  }
+  return {
+    productId: product.id,
+    values,
+    createdAt: Date.now()
+  };
+}
+
 function initProductPage() {
   const product = getProductFromUrl();
   const notFound = document.getElementById("not-found");
@@ -120,6 +137,11 @@ function initProductPage() {
 
   document.getElementById("generate-btn").addEventListener("click", () => drawPreview(product));
   document.getElementById("engrave-toggle").addEventListener("change", () => drawPreview(product));
+
+  document.getElementById("order-btn").addEventListener("click", () => {
+    sessionStorage.setItem("rbstudio-order", JSON.stringify(collectOrder(product)));
+    window.location.href = "checkout.html";
+  });
 }
 
 document.addEventListener("DOMContentLoaded", initProductPage);

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="assets/logo/rb-studio-favicon.svg">
+  <title>Bestellung — RB Studios</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav nav-left">
+      <a href="index.html">Start</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Kontakt</a>
+    </nav>
+    <div class="brand-block">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/logo/rb-studio-logo.svg" alt="Studio RB">
+      </a>
+    </div>
+    <nav class="site-nav nav-right">
+      <a href="laser.html">Laser</a>
+      <a href="3d-druck.html">3D Druck</a>
+      <a href="impressum.html">Impressum</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <h1>Deine Bestellung</h1>
+
+    <p id="empty-state" hidden>Keine Bestellung gefunden. <a href="laser.html">Zurück zum Katalog</a></p>
+
+    <div id="order-summary" hidden>
+      <p id="order-product"></p>
+      <p class="price" id="order-price"></p>
+      <ul id="order-values"></ul>
+
+      <div class="actions">
+        <button class="btn primary" id="submit-order-btn" type="button">Bestellung abschicken</button>
+      </div>
+
+      <p class="placeholder-note">Zahlungsabwicklung und automatische Auftragsverarbeitung sind noch nicht angebunden — dieser Schritt ist aktuell ein Platzhalter.</p>
+    </div>
+
+    <div id="order-confirmation" hidden>
+      <p>Danke für deine Bestellung! Wir melden uns mit den nächsten Schritten.</p>
+      <a class="btn" href="laser.html">Zurück zum Katalog</a>
+    </div>
+  </main>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/checkout.js"></script>
+</body>
+</html>
