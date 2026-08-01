@@ -2,15 +2,10 @@
 
 function woodThumb(label) {
   return "data:image/svg+xml;utf8," + encodeURIComponent(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
-      <defs>
-        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#C89666"/>
-          <stop offset="1" stop-color="#9C6B3E"/>
-        </linearGradient>
-      </defs>
-      <rect width="400" height="300" fill="url(#g)"/>
-      <text x="200" y="160" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#3A2414">${label}</text>
+    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="320">
+      <rect width="400" height="320" fill="#E4DFD2"/>
+      <circle cx="200" cy="150" r="72" fill="none" stroke="#B3492A" stroke-width="1.5"/>
+      <text x="200" y="248" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="600" font-size="12" letter-spacing="2" fill="#6E6A62">${label.toUpperCase()}</text>
     </svg>
   `);
 }
@@ -24,17 +19,17 @@ const PRODUCTS = {
     thumb: woodThumb("Schlüsselanhänger"),
     canvas: { width: 460, height: 320 },
     drawTemplate(ctx, w, h) {
-      ctx.fillStyle = "#C89666";
+      ctx.fillStyle = "#E4DFD2";
       ctx.fillRect(0, 0, w, h);
       const cx = w / 2, cy = h / 2, r = 110;
       ctx.beginPath();
       ctx.ellipse(cx, cy, r, r * 0.62, 0, 0, Math.PI * 2);
-      ctx.fillStyle = "#D8AE7C";
+      ctx.fillStyle = "#F4F1E8";
       ctx.fill();
       ctx.beginPath();
       ctx.arc(cx, cy - r * 0.62 - 14, 12, 0, Math.PI * 2);
-      ctx.strokeStyle = "#5C3B20";
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = "#B3492A";
+      ctx.lineWidth = 2;
       ctx.stroke();
     },
     fields: [
@@ -50,10 +45,10 @@ const PRODUCTS = {
     thumb: woodThumb("Namensschild"),
     canvas: { width: 460, height: 320 },
     drawTemplate(ctx, w, h) {
-      ctx.fillStyle = "#EDEAE0";
+      ctx.fillStyle = "#F4F1E8";
       ctx.fillRect(0, 0, w, h);
-      ctx.strokeStyle = "#B8451E";
-      ctx.lineWidth = 4;
+      ctx.strokeStyle = "#B3492A";
+      ctx.lineWidth = 1.5;
       ctx.strokeRect(28, 28, w - 56, h - 56);
     },
     fields: [
@@ -70,9 +65,9 @@ const PRODUCTS = {
     thumb: woodThumb("Foto-Gravur"),
     canvas: { width: 460, height: 320 },
     drawTemplate(ctx, w, h) {
-      ctx.fillStyle = "#9C6B3E";
+      ctx.fillStyle = "#E4DFD2";
       ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = "#EDEAE0";
+      ctx.fillStyle = "#F4F1E8";
       ctx.fillRect(30, 24, w - 60, h - 90);
     },
     fields: [

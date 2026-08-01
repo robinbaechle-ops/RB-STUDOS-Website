@@ -1,25 +1,57 @@
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/archivo-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/archivo-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/archivo-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/fraunces-600.woff2") format("woff2");
+}
+
 :root {
-  --bg: #ECE7DB;
+  --bg: #FAF8F4;
   --surface: #FFFFFF;
-  --surface-2: #F4EFE3;
-  --text: #241F19;
-  --text-muted: #6B6154;
-  --border: #D9D0BC;
-  --accent: #B8451E;
-  --accent-ink: #7A2E13;
-  --accent-contrast: #FFF7EE;
+  --surface-2: #F1EEE7;
+  --text: #1A1815;
+  --text-muted: #6E6A62;
+  --border: #E4E0D6;
+  --accent: #B3492A;
+  --accent-ink: #7C3319;
+  --accent-contrast: #FFF9F4;
+
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-body: "Archivo", -apple-system, "Segoe UI", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #171310;
-    --surface: #1F1A15;
-    --surface-2: #251F18;
-    --text: #EDE6D8;
-    --text-muted: #A89C89;
-    --border: #392F24;
-    --accent: #E2703A;
-    --accent-ink: #F2A374;
+    --bg: #14130F;
+    --surface: #1C1A15;
+    --surface-2: #24221B;
+    --text: #F2EFE8;
+    --text-muted: #9C978A;
+    --border: #34312A;
+    --accent: #E28558;
+    --accent-ink: #F0AA84;
     --accent-contrast: #1A1108;
   }
 }
@@ -33,157 +65,198 @@ html, body {
 }
 
 body {
-  font-family: Georgia, "Iowan Old Style", "Noto Serif", "Times New Roman", serif;
-  line-height: 1.55;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
 }
 
 a { color: var(--accent-ink); }
 
 .site-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  padding: 20px 28px;
+  padding: 26px 40px;
   border-bottom: 1px solid var(--border);
 }
 
 .brand {
-  font-weight: 700;
-  font-size: 1.15rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.35rem;
   text-decoration: none;
   color: var(--text);
   letter-spacing: -.01em;
 }
 
 .tagline {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--font-body);
+  font-weight: 500;
   font-size: .72rem;
   text-transform: uppercase;
-  letter-spacing: .1em;
+  letter-spacing: .16em;
   color: var(--text-muted);
 }
 
 main {
-  max-width: 1040px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 40px 24px 80px;
+  padding: 64px 40px 100px;
 }
 
 /* ---------- catalog grid ---------- */
 .catalog h1 {
-  font-size: 1.7rem;
-  margin: 0 0 6px;
-  letter-spacing: -.01em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.1rem, 1.7rem + 1.6vw, 2.9rem);
+  line-height: 1.08;
+  letter-spacing: -.02em;
+  margin: 0 0 14px;
+  text-wrap: balance;
 }
 
 .catalog .intro {
   color: var(--text-muted);
-  max-width: 60ch;
-  margin: 0 0 32px;
+  max-width: 52ch;
+  font-size: 1.02rem;
+  margin: 0 0 56px;
 }
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  column-gap: 32px;
+  row-gap: 48px;
 }
 
 .product-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
 .product-card .thumb {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 5 / 4;
   width: 100%;
   display: block;
   background: var(--surface-2);
   object-fit: cover;
+  border-radius: 2px;
+  margin-bottom: 18px;
+  transition: opacity .2s ease;
 }
 
+.product-card:hover .thumb { opacity: .85; }
+
 .product-card .body {
-  padding: 16px 18px 20px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  flex: 1;
+  gap: 4px;
 }
 
 .product-card h2 {
-  font-size: 1.05rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.02rem;
   margin: 0;
+  letter-spacing: -.01em;
 }
 
 .product-card .price {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 1rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: .92rem;
   color: var(--accent-ink);
   font-variant-numeric: tabular-nums;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
 }
 
 .product-card .desc {
   color: var(--text-muted);
   font-size: .88rem;
-  margin: 0 0 10px;
-  flex: 1;
+  line-height: 1.5;
+  margin: 0 0 16px;
 }
 
 /* ---------- buttons ---------- */
 .btn {
-  display: inline-block;
-  border: none;
-  border-radius: 4px;
-  padding: 11px 18px;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: .82rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  padding: 11px 24px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: .74rem;
   text-transform: uppercase;
-  letter-spacing: .06em;
+  letter-spacing: .1em;
   text-decoration: none;
   text-align: center;
   cursor: pointer;
-  background: var(--accent);
-  color: var(--accent-contrast);
-  transition: filter .15s ease;
-}
-
-.btn:hover { filter: brightness(1.08); }
-.btn:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
-
-.btn.secondary {
   background: transparent;
   color: var(--text);
-  border: 1px solid var(--border);
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+
+.btn:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.btn.primary:hover {
+  background: var(--accent-ink);
+  border-color: var(--accent-ink);
+  color: var(--accent-contrast);
 }
 
 .btn:disabled {
-  opacity: .5;
+  opacity: .45;
   cursor: not-allowed;
 }
 
 /* ---------- product / customizer page ---------- */
 .back-link {
   display: inline-block;
-  margin-bottom: 20px;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  margin-bottom: 32px;
+  font-family: var(--font-body);
+  font-weight: 500;
   font-size: .78rem;
+  letter-spacing: .04em;
   text-decoration: none;
   color: var(--text-muted);
 }
 
 .product-layout {
   display: grid;
-  grid-template-columns: minmax(260px, 480px) 1fr;
-  gap: 40px;
+  grid-template-columns: minmax(280px, 500px) 1fr;
+  gap: 56px;
   align-items: start;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 760px) {
   .product-layout { grid-template-columns: 1fr; }
+}
+
+.preview-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: 2px;
 }
 
 .preview-panel canvas {
@@ -191,75 +264,101 @@ main {
   height: auto;
   display: block;
   background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
 }
 
 .preview-caption {
-  font-size: .8rem;
+  font-size: .82rem;
   color: var(--text-muted);
-  margin-top: 8px;
+  line-height: 1.5;
+  margin: 16px 4px 0;
 }
 
 .customizer-form h1 {
-  font-size: 1.4rem;
-  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.7rem, 1.4rem + 1vw, 2.2rem);
+  letter-spacing: -.01em;
+  margin: 0 0 6px;
 }
 
 .customizer-form .price {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--font-body);
+  font-weight: 500;
   color: var(--accent-ink);
-  font-size: 1.1rem;
-  margin: 0 0 20px;
+  font-size: 1.05rem;
+  margin: 0 0 36px;
 }
 
 .field {
-  margin-bottom: 18px;
+  margin-bottom: 26px;
 }
 
 .field label {
   display: block;
-  font-size: .85rem;
-  font-weight: 700;
-  margin-bottom: 6px;
+  font-family: var(--font-body);
+  font-size: .74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
 }
 
 .field .hint {
   display: block;
-  font-size: .76rem;
+  font-size: .78rem;
+  text-transform: none;
+  letter-spacing: normal;
   color: var(--text-muted);
   font-weight: 400;
-  margin-top: 3px;
+  margin-top: 6px;
 }
 
-.field input[type="text"],
+.field input[type="text"] {
+  width: 100%;
+  padding: 10px 2px;
+  border: none;
+  border-bottom: 1.5px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: border-color .15s ease;
+}
+
+.field input[type="text"]:focus-visible {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+
 .field input[type="file"] {
   width: 100%;
-  padding: 9px 11px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: var(--surface);
+  padding: 10px 0;
+  border: none;
+  background: transparent;
   color: var(--text);
-  font-family: inherit;
-  font-size: .95rem;
+  font-family: var(--font-body);
+  font-size: .9rem;
 }
 
-.field input[type="text"]:focus-visible,
 .field input[type="file"]:focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 1px;
+  outline-offset: 2px;
 }
 
 .checkbox-field {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 20px 0;
+  gap: 10px;
+  margin: 28px 0;
+  font-family: var(--font-body);
   font-size: .88rem;
+  accent-color: var(--accent);
 }
 
 .actions {
   display: flex;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 8px;
 }

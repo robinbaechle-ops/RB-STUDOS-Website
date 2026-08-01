@@ -48,8 +48,8 @@ function loadImageField(field) {
 
 function drawText(ctx, field, value, w, h) {
   if (!value) return;
-  ctx.fillStyle = "#3A2414";
-  ctx.font = `${field.size}px Georgia, serif`;
+  ctx.fillStyle = "#1A1815";
+  ctx.font = `600 ${field.size}px Fraunces, Georgia, serif`;
   ctx.textAlign = field.align;
   ctx.textBaseline = "middle";
   ctx.fillText(value, field.x * w, field.y * h);
@@ -116,7 +116,7 @@ function initProductPage() {
   canvas.height = product.canvas.height;
 
   renderFields(product);
-  drawPreview(product);
+  document.fonts.ready.then(() => drawPreview(product));
 
   document.getElementById("generate-btn").addEventListener("click", () => drawPreview(product));
   document.getElementById("engrave-toggle").addEventListener("change", () => drawPreview(product));
