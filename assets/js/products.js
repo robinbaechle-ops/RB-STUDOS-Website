@@ -1,6 +1,14 @@
-/* Beispiel-Produktkatalog. Bilder sind Platzhalter-SVGs, bis echte Produktfotos vorliegen. */
+/*
+ * Produktkatalog — reine Daten, kein Zeichencode.
+ *
+ * Ein Produkt hinzufügen:
+ *   1. Foto nach assets/products/<id>.jpg legen (oder das Tool unter tools/designer.html nutzen).
+ *   2. Einen neuen Eintrag unten ergänzen: image auf den Fotopfad setzen,
+ *      canvas.width/height auf die Bildmaße, fields auf die Text-/Foto-Positionen.
+ *   3. Ohne eigenes Foto bleibt "image: null" — dann wird ein Platzhalter gezeichnet.
+ */
 
-function woodThumb(label) {
+function placeholderThumb(label) {
   return "data:image/svg+xml;utf8," + encodeURIComponent(`
     <svg xmlns="http://www.w3.org/2000/svg" width="400" height="320">
       <rect width="400" height="320" fill="#E4DFD2"/>
@@ -16,22 +24,9 @@ const PRODUCTS = {
     name: "Schlüsselanhänger Holz",
     price: 9.9,
     desc: "Gravierter Anhänger aus Birkensperrholz, mit Name oder Spruch.",
-    thumb: woodThumb("Schlüsselanhänger"),
+    image: null,
+    bgColor: "#E4DFD2",
     canvas: { width: 460, height: 320 },
-    drawTemplate(ctx, w, h) {
-      ctx.fillStyle = "#E4DFD2";
-      ctx.fillRect(0, 0, w, h);
-      const cx = w / 2, cy = h / 2, r = 110;
-      ctx.beginPath();
-      ctx.ellipse(cx, cy, r, r * 0.62, 0, 0, Math.PI * 2);
-      ctx.fillStyle = "#F4F1E8";
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(cx, cy - r * 0.62 - 14, 12, 0, Math.PI * 2);
-      ctx.strokeStyle = "#B3492A";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    },
     fields: [
       { id: "text1", type: "text", label: "Name oder Spruch", maxLength: 14, x: 0.5, y: 0.5, size: 30, align: "center" }
     ]
@@ -42,15 +37,9 @@ const PRODUCTS = {
     name: "Namensschild Acryl",
     price: 16.5,
     desc: "Zweizeiliges Türschild aus mattem Acrylglas.",
-    thumb: woodThumb("Namensschild"),
+    image: null,
+    bgColor: "#F4F1E8",
     canvas: { width: 460, height: 320 },
-    drawTemplate(ctx, w, h) {
-      ctx.fillStyle = "#F4F1E8";
-      ctx.fillRect(0, 0, w, h);
-      ctx.strokeStyle = "#B3492A";
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(28, 28, w - 56, h - 56);
-    },
     fields: [
       { id: "text1", type: "text", label: "Name", maxLength: 20, x: 0.5, y: 0.42, size: 34, align: "center" },
       { id: "text2", type: "text", label: "Untertitel (optional)", maxLength: 26, x: 0.5, y: 0.6, size: 18, align: "center" }
@@ -62,14 +51,9 @@ const PRODUCTS = {
     name: "Foto-Gravur Holzbild",
     price: 24.0,
     desc: "Dein Foto als Gravur auf einer Holzplatte, mit optionaler Bildunterschrift.",
-    thumb: woodThumb("Foto-Gravur"),
+    image: null,
+    bgColor: "#E4DFD2",
     canvas: { width: 460, height: 320 },
-    drawTemplate(ctx, w, h) {
-      ctx.fillStyle = "#E4DFD2";
-      ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = "#F4F1E8";
-      ctx.fillRect(30, 24, w - 60, h - 90);
-    },
     fields: [
       {
         id: "photo", type: "image", label: "Foto hochladen",
@@ -80,3 +64,7 @@ const PRODUCTS = {
     ]
   }
 };
+
+Object.values(PRODUCTS).forEach((product) => {
+  product.thumb = product.image || placeholderThumb(product.name);
+});

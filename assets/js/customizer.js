@@ -1,8 +1,37 @@
 const uploadedImages = {};
+const backgroundCache = {};
 
 function getProductFromUrl() {
   const id = new URLSearchParams(window.location.search).get("product");
   return PRODUCTS[id] || null;
+}
+
+function loadImageSrc(src) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.src = src;
+  });
+}
+
+async function getBackground(product) {
+  if (!product.image) return null;
+  if (!backgroundCache[product.id]) {
+    backgroundCache[product.id] = await loadImageSrc(product.image);
+  }
+  return backgroundCache[product.id];
+}
+
+function drawBackground(ctx, w, h, product, bgImage) {
+  if (bgImage) {
+    const scale = Math.max(w / bgImage.width, h / bgImage.height);
+    const sw = w / scale, sh = h / scale;
+    const sx = (bgImage.width - sw) / 2, sy = (bgImage.height - sh) / 2;
+    ctx.drawImage(bgImage, sx, sy, sw, sh, 0, 0, w, h);
+  } else {
+    ctx.fillStyle = product.bgColor || "#E4DFD2";
+    ctx.fillRect(0, 0, w, h);
+  }
 }
 
 function renderFields(product) {
@@ -70,9 +99,10 @@ async function drawPreview(product) {
   const canvas = document.getElementById("preview-canvas");
   const ctx = canvas.getContext("2d");
   const { width: w, height: h } = product.canvas;
+  const bgImage = await getBackground(product);
 
   ctx.clearRect(0, 0, w, h);
-  product.drawTemplate(ctx, w, h);
+  drawBackground(ctx, w, h, product, bgImage);
 
   for (const field of product.fields) {
     if (field.type === "text") {

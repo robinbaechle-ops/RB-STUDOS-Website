@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo/rb-studio-favicon.svg">
+  <title>Designer-Werkzeug — RB Studios</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/designer.css">
+</head>
+<body>
+  <header class="designer-header">
+    <h1>Neues Produkt anlegen</h1>
+    <a href="../laser.html">← Zurück zur Website</a>
+  </header>
+
+  <div class="designer-layout">
+    <section class="designer-canvas-panel">
+      <div class="field" style="margin-bottom: 16px;">
+        <label for="photo-input">Produktfoto</label>
+        <input type="file" id="photo-input" accept="image/png, image/jpeg">
+      </div>
+      <canvas id="designer-canvas" width="460" height="320"></canvas>
+      <p class="designer-hint" id="designer-hint">Foto hochladen, dann unten Felder hinzufügen und auf dem Foto platzieren.</p>
+    </section>
+
+    <section>
+      <div class="designer-section">
+        <h2>Produkt</h2>
+        <div class="designer-grid">
+          <div class="field">
+            <label for="p-name">Name</label>
+            <input type="text" id="p-name" placeholder="z. B. Schlüsselanhänger Holz">
+          </div>
+          <div class="field">
+            <label for="p-price">Preis (€)</label>
+            <input type="text" id="p-price" placeholder="z. B. 9.90">
+          </div>
+        </div>
+        <div class="field">
+          <label for="p-desc">Beschreibung</label>
+          <input type="text" id="p-desc" placeholder="Kurzer Satz für den Katalog">
+        </div>
+      </div>
+
+      <div class="designer-section">
+        <h2>Felder</h2>
+        <div id="fields-list"></div>
+        <div class="actions">
+          <button class="btn small" id="add-text-field" type="button">+ Textfeld</button>
+          <button class="btn small" id="add-image-field" type="button">+ Foto-Feld</button>
+        </div>
+      </div>
+
+      <div class="designer-section">
+        <h2>Ergebnis</h2>
+        <ol class="designer-steps">
+          <li>Foto herunterladen und als <code>assets/products/&lt;dateiname&gt;</code> im Repo ablegen.</li>
+          <li>Code unten kopieren und in <code>assets/js/products.js</code> unter <code>PRODUCTS</code> einfügen.</li>
+          <li>Änderungen committen und pushen (oder mir schicken).</li>
+        </ol>
+        <div class="actions" style="margin-bottom: 16px;">
+          <button class="btn" id="download-photo-btn" type="button">Foto herunterladen</button>
+          <button class="btn primary" id="generate-code-btn" type="button">Code generieren</button>
+          <button class="btn" id="copy-code-btn" type="button">In Zwischenablage kopieren</button>
+        </div>
+        <textarea id="code-output" readonly placeholder="Code erscheint hier, sobald du auf „Code generieren“ klickst."></textarea>
+      </div>
+    </section>
+  </div>
+
+  <script src="../assets/js/designer.js"></script>
+</body>
+</html>
