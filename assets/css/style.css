@@ -40,6 +40,9 @@
 
   --font-display: "Fraunces", ui-serif, Georgia, serif;
   --font-body: "Archivo", -apple-system, "Segoe UI", sans-serif;
+
+  --radius-lg: 24px;
+  --radius-md: 16px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -78,18 +81,52 @@ body {
 a { color: var(--accent-ink); }
 
 .site-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  padding: 26px 40px;
+  gap: 16px;
+  padding: 24px 40px;
   border-bottom: 1px solid var(--border);
+}
+
+.site-nav {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav.nav-left { justify-self: start; }
+.site-nav.nav-right { justify-self: end; }
+
+.site-nav a {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: .76rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: color .15s ease;
+}
+
+.site-nav a:hover { color: var(--text); }
+.site-nav a[aria-current="page"] { color: var(--accent-ink); }
+
+.brand-block {
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 
 .brand {
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 600;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   text-decoration: none;
   color: var(--text);
   letter-spacing: -.01em;
@@ -98,16 +135,89 @@ a { color: var(--accent-ink); }
 .tagline {
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: .72rem;
+  font-size: .66rem;
   text-transform: uppercase;
   letter-spacing: .16em;
   color: var(--text-muted);
+}
+
+@media (max-width: 760px) {
+  .site-header {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 14px;
+    padding: 24px;
+  }
+  .site-nav.nav-left, .site-nav.nav-right {
+    justify-self: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 main {
   max-width: 1100px;
   margin: 0 auto;
   padding: 64px 40px 100px;
+}
+
+/* ---------- home ---------- */
+main.home {
+  padding-top: 96px;
+  padding-bottom: 120px;
+}
+
+.home h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.3rem, 1.8rem + 2.2vw, 3.6rem);
+  line-height: 1.08;
+  letter-spacing: -.02em;
+  max-width: 17ch;
+  margin: 0 0 22px;
+  text-wrap: balance;
+}
+
+.home .intro {
+  color: var(--text-muted);
+  max-width: 54ch;
+  font-size: 1.06rem;
+  margin: 0 0 40px;
+}
+
+.home .actions {
+  margin-top: 0;
+  flex-wrap: wrap;
+}
+
+/* ---------- simple content pages ---------- */
+main.page {
+  max-width: 720px;
+}
+
+main.page h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 1.7rem + 1.2vw, 2.6rem);
+  letter-spacing: -.02em;
+  margin: 0 0 24px;
+}
+
+main.page p {
+  color: var(--text-muted);
+  font-size: 1.02rem;
+  max-width: 60ch;
+  margin: 0 0 16px;
+}
+
+main.page .placeholder-note {
+  margin-top: 32px;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: .88rem;
 }
 
 /* ---------- catalog grid ---------- */
@@ -146,7 +256,7 @@ main {
   display: block;
   background: var(--surface-2);
   object-fit: cover;
-  border-radius: 2px;
+  border-radius: var(--radius-lg);
   margin-bottom: 18px;
   transition: opacity .2s ease;
 }
@@ -256,7 +366,8 @@ main {
   background: var(--surface);
   border: 1px solid var(--border);
   padding: 20px;
-  border-radius: 2px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
 }
 
 .preview-panel canvas {
@@ -264,6 +375,7 @@ main {
   height: auto;
   display: block;
   background: var(--surface-2);
+  border-radius: var(--radius-md);
 }
 
 .preview-caption {
@@ -316,11 +428,10 @@ main {
 
 .field input[type="text"] {
   width: 100%;
-  padding: 10px 2px;
-  border: none;
-  border-bottom: 1.5px solid var(--border);
-  border-radius: 0;
-  background: transparent;
+  padding: 13px 18px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 1rem;
@@ -329,22 +440,23 @@ main {
 
 .field input[type="text"]:focus-visible {
   outline: none;
-  border-bottom-color: var(--accent);
+  border-color: var(--accent);
 }
 
 .field input[type="file"] {
   width: 100%;
-  padding: 10px 0;
-  border: none;
-  background: transparent;
+  padding: 12px 16px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
   color: var(--text);
   font-family: var(--font-body);
   font-size: .9rem;
 }
 
 .field input[type="file"]:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: none;
+  border-color: var(--accent);
 }
 
 .checkbox-field {
