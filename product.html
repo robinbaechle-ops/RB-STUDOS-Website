@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Produkt individualisieren</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">RB Studios</a>
+    <span class="tagline">Lasergravuren nach Maß</span>
+  </header>
+
+  <main>
+    <a class="back-link" href="index.html">← Zurück zum Shop</a>
+
+    <p id="not-found" hidden>Dieses Produkt wurde nicht gefunden. <a href="index.html">Zurück zum Shop</a></p>
+
+    <div class="product-layout" id="product-layout">
+      <section class="preview-panel">
+        <canvas id="preview-canvas"></canvas>
+        <p class="preview-caption">Live-Vorschau deines Motivs. Für die endgültige Datei wird daraus automatisch die Gravurdatei erzeugt.</p>
+      </section>
+
+      <section class="customizer-form">
+        <h1 id="product-name"></h1>
+        <p class="price" id="product-price"></p>
+
+        <form id="fields" onsubmit="return false;"></form>
+
+        <label class="checkbox-field">
+          <input type="checkbox" id="engrave-toggle">
+          Gravur-Vorschau (Graustufen)
+        </label>
+
+        <div class="actions">
+          <button class="btn" id="generate-btn" type="button">Vorschau generieren</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/customizer.js"></script>
+</body>
+</html>

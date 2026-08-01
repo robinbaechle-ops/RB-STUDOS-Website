@@ -1,0 +1,265 @@
+:root {
+  --bg: #ECE7DB;
+  --surface: #FFFFFF;
+  --surface-2: #F4EFE3;
+  --text: #241F19;
+  --text-muted: #6B6154;
+  --border: #D9D0BC;
+  --accent: #B8451E;
+  --accent-ink: #7A2E13;
+  --accent-contrast: #FFF7EE;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171310;
+    --surface: #1F1A15;
+    --surface-2: #251F18;
+    --text: #EDE6D8;
+    --text-muted: #A89C89;
+    --border: #392F24;
+    --accent: #E2703A;
+    --accent-ink: #F2A374;
+    --accent-contrast: #1A1108;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family: Georgia, "Iowan Old Style", "Noto Serif", "Times New Roman", serif;
+  line-height: 1.55;
+}
+
+a { color: var(--accent-ink); }
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.15rem;
+  text-decoration: none;
+  color: var(--text);
+  letter-spacing: -.01em;
+}
+
+.tagline {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--text-muted);
+}
+
+main {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ---------- catalog grid ---------- */
+.catalog h1 {
+  font-size: 1.7rem;
+  margin: 0 0 6px;
+  letter-spacing: -.01em;
+}
+
+.catalog .intro {
+  color: var(--text-muted);
+  max-width: 60ch;
+  margin: 0 0 32px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 24px;
+}
+
+.product-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card .thumb {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  display: block;
+  background: var(--surface-2);
+  object-fit: cover;
+}
+
+.product-card .body {
+  padding: 16px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.product-card h2 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.product-card .price {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 1rem;
+  color: var(--accent-ink);
+  font-variant-numeric: tabular-nums;
+  margin: 0 0 6px;
+}
+
+.product-card .desc {
+  color: var(--text-muted);
+  font-size: .88rem;
+  margin: 0 0 10px;
+  flex: 1;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 4px;
+  padding: 11px 18px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  transition: filter .15s ease;
+}
+
+.btn:hover { filter: brightness(1.08); }
+.btn:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+
+.btn.secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* ---------- product / customizer page ---------- */
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .78rem;
+  text-decoration: none;
+  color: var(--text-muted);
+}
+
+.product-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 480px) 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .product-layout { grid-template-columns: 1fr; }
+}
+
+.preview-panel canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.preview-caption {
+  font-size: .8rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.customizer-form h1 {
+  font-size: 1.4rem;
+  margin: 0 0 4px;
+}
+
+.customizer-form .price {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color: var(--accent-ink);
+  font-size: 1.1rem;
+  margin: 0 0 20px;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.field .hint {
+  display: block;
+  font-size: .76rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-top: 3px;
+}
+
+.field input[type="text"],
+.field input[type="file"] {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: .95rem;
+}
+
+.field input[type="text"]:focus-visible,
+.field input[type="file"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0;
+  font-size: .88rem;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
