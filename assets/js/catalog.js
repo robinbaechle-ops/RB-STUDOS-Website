@@ -1,8 +1,17 @@
-function renderCatalog() {
+async function renderCatalog() {
   const grid = document.getElementById("product-grid");
   if (!grid) return;
 
-  Object.values(PRODUCTS).forEach((product) => {
+  const category = grid.dataset.category || null;
+  const products = await loadProducts();
+  const list = Object.values(products).filter((p) => !category || p.category === category);
+
+  if (list.length === 0) {
+    grid.innerHTML = `<p class="empty-catalog">Noch keine Produkte in dieser Kategorie.</p>`;
+    return;
+  }
+
+  list.forEach((product) => {
     const card = document.createElement("article");
     card.className = "product-card";
     card.innerHTML = `

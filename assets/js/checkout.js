@@ -18,10 +18,11 @@ function renderOrderValues(product, values) {
   });
 }
 
-function initCheckout() {
+async function initCheckout() {
   const raw = sessionStorage.getItem("rbstudio-order");
   const order = raw ? JSON.parse(raw) : null;
-  const product = order ? PRODUCTS[order.productId] : null;
+  const products = await loadProducts();
+  const product = order ? products[order.productId] : null;
 
   if (!order || !product) {
     document.getElementById("empty-state").hidden = false;

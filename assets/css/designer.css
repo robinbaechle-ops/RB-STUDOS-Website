@@ -10,6 +10,14 @@
 
 .designer-header a { color: var(--text-muted); font-size: .85rem; }
 
+.designer-intro {
+  max-width: 1120px;
+  margin: 20px auto 0;
+  padding: 0 40px;
+  color: var(--text-muted);
+  font-size: .92rem;
+}
+
 .designer-header h1 {
   font-family: var(--font-display);
   font-size: 1.3rem;

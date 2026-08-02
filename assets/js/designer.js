@@ -221,11 +221,15 @@ function generateCode() {
     })
     .join(",\n");
 
+  const category = document.getElementById("p-category").value;
+
   const code = `  ${slug}: {
     id: "${slug}",
     name: "${name}",
     price: ${price},
     desc: "${desc}",
+    category: "${category}",
+    folder: null,
     image: ${imagePath === "null" ? "null" : `"${imagePath}"`},
     bgColor: "#E4DFD2",
     canvas: { width: ${state.naturalW}, height: ${state.naturalH} },
