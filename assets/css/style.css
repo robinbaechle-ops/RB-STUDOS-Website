@@ -73,6 +73,10 @@ a { color: var(--accent-ink); }
   gap: 16px;
   padding: 18px 40px;
   border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
 }
 
 .site-nav {
@@ -688,4 +692,34 @@ main.page .price {
   color: var(--text-muted);
   font-size: .88rem;
   max-width: 560px;
+}
+
+/* ---------- footer ---------- */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: var(--font-body);
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+
+.site-footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--text);
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    justify-content: center;
+    text-align: center;
+  }
 }

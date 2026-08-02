@@ -32,4 +32,12 @@ function initMobileNav() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", initMobileNav);
+function initFooterYear() {
+  const el = document.getElementById("copyright-year");
+  if (el) el.textContent = new Date().getFullYear();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initMobileNav();
+  initFooterYear();
+});
