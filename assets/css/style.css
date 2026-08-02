@@ -244,6 +244,41 @@ main.page p {
   margin: 0 0 16px;
 }
 
+main.page address {
+  font-style: normal;
+  color: var(--text-muted);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+main.page h2 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text);
+  letter-spacing: -.005em;
+  margin: 40px 0 10px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+main.page h2:first-of-type {
+  margin-top: 32px;
+}
+
+main.page h3 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: .92rem;
+  color: var(--text);
+  margin: 22px 0 8px;
+}
+
+main.page a {
+  color: var(--accent-ink);
+}
+
 main.page .placeholder-note {
   margin-top: 32px;
   padding: 16px 20px;
