@@ -39,10 +39,39 @@
 
   <main class="page">
     <h1>Kontakt</h1>
-    <p>Fragen zu einem Motiv, zur Lieferzeit oder ein individueller Wunsch? Wir melden uns.</p>
-    <p class="placeholder-note">Kontaktformular folgt in Kürze. Bis dahin bitte über den Kanal melden, über den du auf RB Studios aufmerksam geworden bist.</p>
+    <p>Fragen zu einem Motiv, zur Lieferzeit oder ein individueller Wunsch? Schreib uns.</p>
+
+    <form class="contact-form" id="contact-form">
+      <div class="form-row">
+        <div class="field">
+          <label for="first-name">Vorname</label>
+          <input type="text" id="first-name" name="firstName" required>
+        </div>
+        <div class="field">
+          <label for="last-name">Nachname</label>
+          <input type="text" id="last-name" name="lastName" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">E-Mail</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="field">
+        <label for="message">Nachricht</label>
+        <textarea id="message" name="message" rows="6" required></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" type="submit">Nachricht senden</button>
+      </div>
+    </form>
+
+    <p class="form-status" id="form-status" hidden></p>
   </main>
 
+  <script src="assets/js/contact.js"></script>
   <script src="assets/js/nav.js"></script>
 </body>
 </html>
