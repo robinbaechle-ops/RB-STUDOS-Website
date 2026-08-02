@@ -9,6 +9,9 @@
 </head>
 <body>
   <header class="site-header">
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menü öffnen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
     <nav class="site-nav nav-left">
       <a href="index.html">Start</a>
       <a href="about.html">About</a>
@@ -20,6 +23,14 @@
       </a>
     </div>
     <nav class="site-nav nav-right">
+      <a href="laser.html">Laser</a>
+      <a href="3d-druck.html">3D Druck</a>
+      <a href="impressum.html" aria-current="page">Impressum</a>
+    </nav>
+    <nav class="mobile-nav" id="mobile-nav" hidden>
+      <a href="index.html">Start</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Kontakt</a>
       <a href="laser.html">Laser</a>
       <a href="3d-druck.html">3D Druck</a>
       <a href="impressum.html" aria-current="page">Impressum</a>
@@ -36,5 +47,6 @@
     <p class="placeholder-note">Platzhalter — vor Veröffentlichung der Website müssen hier die vollständigen, korrekten Pflichtangaben eingetragen werden. Ein unvollständiges Impressum ist bei einer gewerblich genutzten Website abmahnfähig.</p>
   </main>
 
+  <script src="assets/js/nav.js"></script>
 </body>
 </html>
