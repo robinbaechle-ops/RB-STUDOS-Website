@@ -244,6 +244,18 @@ main.page p {
   margin: 0 0 16px;
 }
 
+main.page .lede {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: var(--text);
+  line-height: 1.35;
+  max-width: 20ch;
+  margin: 0 0 32px;
+  text-wrap: balance;
+}
+
 main.page address {
   font-style: normal;
   color: var(--text-muted);
