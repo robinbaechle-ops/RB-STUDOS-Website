@@ -112,19 +112,24 @@ async function handleAiGenerate(request, env) {
     urls.push(url);
   }
 
+  // Das "kontext"-Modell (Bild-zu-Bild) erfordert seit Kurzem einen
+  // kostenlosen API-Key von enter.pollinations.ai (wöchentliches
+  // Freikontingent, keine Kreditkarte nötig). Der Key wird sowohl als
+  // Header als auch als Query-Parameter mitgeschickt, da nicht dokumentiert
+  // ist, welche der beiden Varianten der Bild-Endpunkt tatsächlich prüft.
   const pollinationsUrl =
     POLLINATIONS_URL +
     encodeURIComponent(prompt) +
     "?model=kontext" +
     (urls.length ? "&image=" + encodeURIComponent(urls.join("|")) : "") +
-    "&width=1024&height=768&nologo=true&referrer=studio-rb.net";
+    "&width=1024&height=768&nologo=true&referrer=studio-rb.net" +
+    (env.POLLINATIONS_API_KEY ? "&key=" + encodeURIComponent(env.POLLINATIONS_API_KEY) : "");
 
-  // Das "kontext"-Modell (Bild-zu-Bild) erfordert seit Kurzem einen
-  // kostenlosen API-Key von enter.pollinations.ai (wöchentliches
-  // Freikontingent, keine Kreditkarte nötig).
   const pollinationsHeaders = env.POLLINATIONS_API_KEY
     ? { Authorization: `Bearer ${env.POLLINATIONS_API_KEY}` }
     : {};
+
+  console.log("POLLINATIONS_API_KEY gesetzt:", !!env.POLLINATIONS_API_KEY, "Länge:", (env.POLLINATIONS_API_KEY || "").length);
 
   let imgResponse;
   try {
