@@ -1,6 +1,10 @@
 // KI-Bildvorschau: Foto-Upload oder Textangaben -> Cloudflare Worker ->
 // Google Gemini API -> generiertes Vorschaubild. Der API-Key steckt nur
 // im Worker, nie hier im Browser-Code.
+//
+// Für ein realistisches Ergebnis wird zusätzlich immer das echte,
+// unbedruckte Produktfoto (product.image, aus dem Bildname-Ordner)
+// als Referenzbild mitgeschickt, sofern vorhanden.
 
 const AI_WORKER_URL = "https://ai.studio-rb.net/";
 const AI_SESSION_LIMIT = 5;
@@ -32,11 +36,39 @@ function fileToBase64(file) {
   });
 }
 
-function buildAiPrompt(product, values) {
+async function urlToBase64(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    return await new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const match = /^data:(.+);base64,(.+)$/.exec(reader.result || "");
+        resolve(match ? { mimeType: match[1], base64: match[2] } : null);
+      };
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(blob);
+    });
+  } catch {
+    return null;
+  }
+}
+
+function buildAiPrompt(product, values, hasReference, hasUpload) {
   const parts = [
     product.aiPrompt ||
       `Erzeuge ein fotorealistisches Produktfoto von "${product.name}" (${product.desc || "personalisiertes Unikat"}), wie es nach der Fertigung aussehen würde.`
   ];
+
+  if (hasReference && hasUpload) {
+    parts.push("Das erste beigefügte Bild zeigt das echte, unbedruckte Produkt (Material, Form, Farbe) — nutze es als exakte Grundlage für das Ergebnis. Das zweite beigefügte Bild ist die Vorlage des Kunden für das gewünschte Motiv.");
+  } else if (hasReference) {
+    parts.push("Das beigefügte Bild zeigt das echte, unbedruckte Produkt (Material, Form, Farbe) — nutze es als exakte Grundlage für das Ergebnis.");
+  } else if (hasUpload) {
+    parts.push("Das beigefügte Bild ist die Vorlage des Kunden für das gewünschte Motiv.");
+  }
+
   const texts = Object.values(values).filter((v) => v && typeof v === "string");
   if (texts.length) {
     parts.push("Bringe folgenden vom Kunden gewünschten Text gut lesbar auf dem Produkt an: " + texts.map((v) => `"${v}"`).join(", ") + ".");
@@ -73,6 +105,11 @@ function initAiPreview(product) {
   const refineSubmit = document.getElementById("ai-refine-submit");
 
   let lastImage = null; // { base64, mimeType } — letztes generiertes Bild, Basis für "Nochmals anpassen"
+  let referenceImage = null; // echtes Produktfoto, einmal geladen und wiederverwendet
+
+  if (product.image) {
+    urlToBase64(product.image).then((data) => { referenceImage = data; });
+  }
 
   function setStatus(text, isError) {
     statusEl.hidden = !text;
@@ -85,7 +122,7 @@ function initAiPreview(product) {
     refineSubmit.disabled = busy;
   }
 
-  async function generate(prompt, baseImage) {
+  async function generate(prompt, images) {
     if (aiGenerationsUsed() >= AI_SESSION_LIMIT) {
       setStatus(`Du hast das Limit von ${AI_SESSION_LIMIT} KI-Vorschauen für diese Sitzung erreicht. Lade die Seite neu oder bestelle direkt mit deinen Angaben.`, true);
       return;
@@ -97,12 +134,7 @@ function initAiPreview(product) {
     refineBox.hidden = true;
 
     try {
-      const payload = { prompt };
-      if (baseImage) {
-        payload.imageBase64 = baseImage.base64;
-        payload.imageMimeType = baseImage.mimeType;
-      }
-      const data = await callAiWorker(payload);
+      const data = await callAiWorker({ prompt, images: images.filter(Boolean) });
       aiRegisterGeneration();
       lastImage = { base64: data.imageBase64, mimeType: data.mimeType || "image/png" };
       resultImg.src = `data:${lastImage.mimeType};base64,${lastImage.base64}`;
@@ -128,7 +160,8 @@ function initAiPreview(product) {
       }
     });
 
-    generate(buildAiPrompt(product, values), uploaded);
+    const prompt = buildAiPrompt(product, values, !!referenceImage, !!uploaded);
+    generate(prompt, [referenceImage, uploaded]);
   });
 
   goodBtn.addEventListener("click", () => {
@@ -149,6 +182,6 @@ function initAiPreview(product) {
       refineText.focus();
       return;
     }
-    generate(`Bearbeite das vorherige Bild wie folgt: ${instruction}`, lastImage);
+    generate(`Bearbeite das vorherige Bild wie folgt: ${instruction}`, [lastImage]);
   });
 }

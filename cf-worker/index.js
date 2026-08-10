@@ -6,6 +6,8 @@ const ALLOWED_ORIGIN = "https://studio-rb.net";
 const GEMINI_MODEL = "gemini-2.5-flash-image";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 const MAX_PROMPT_LENGTH = 2000;
+const MAX_IMAGES = 3;
+const MAX_IMAGE_LENGTH = 8_000_000;
 
 function corsHeaders() {
   return {
@@ -39,21 +41,22 @@ export default {
       return jsonResponse({ error: "Ungültige Anfrage." }, 400);
     }
 
-    const { prompt, imageBase64, imageMimeType } = body || {};
+    const { prompt, images } = body || {};
 
     if (!prompt || typeof prompt !== "string" || prompt.length > MAX_PROMPT_LENGTH) {
       return jsonResponse({ error: "Prompt fehlt oder ist zu lang." }, 400);
     }
 
+    const imageList = Array.isArray(images) ? images.slice(0, MAX_IMAGES) : [];
     const parts = [{ text: prompt }];
-    if (imageBase64) {
-      if (typeof imageBase64 !== "string" || imageBase64.length > 8_000_000) {
+    for (const img of imageList) {
+      if (!img || typeof img.base64 !== "string" || img.base64.length > MAX_IMAGE_LENGTH) {
         return jsonResponse({ error: "Bild ist ungültig oder zu groß." }, 400);
       }
       parts.push({
         inline_data: {
-          mime_type: imageMimeType || "image/jpeg",
-          data: imageBase64,
+          mime_type: img.mimeType || "image/jpeg",
+          data: img.base64,
         },
       });
     }
