@@ -72,6 +72,59 @@ function renderGallery(images) {
   });
 }
 
+function renderTierTable(product) {
+  const table = document.getElementById("tier-table");
+  if (!table) return;
+  if (product.tiers.length <= 1) {
+    table.hidden = true;
+    return;
+  }
+  table.hidden = false;
+  table.innerHTML = product.tiers.map((tier) => `
+    <li><span>${tier.qty === 1 ? "1 Stück" : tier.qty + " Stück"}</span><span>${tier.price.toFixed(2).replace(".", ",")} € / Stück</span></li>
+  `).join("");
+}
+
+function renderStockNote(product) {
+  const note = document.getElementById("stock-note");
+  const qtyInput = document.getElementById("qty");
+  if (!note || !qtyInput) return;
+
+  if (product.stock === null) {
+    note.hidden = true;
+    return;
+  }
+
+  note.hidden = false;
+  if (product.stock > 0) {
+    note.textContent = `Kurzfristig verfügbar: ${product.stock} Stück`;
+    note.classList.remove("out");
+    qtyInput.max = String(product.stock);
+  } else {
+    note.textContent = "Aktuell ausverkauft — melde dich gerne über die Kontaktseite.";
+    note.classList.add("out");
+    qtyInput.max = "1";
+  }
+}
+
+function currentQty() {
+  const qtyInput = document.getElementById("qty");
+  const qty = parseInt(qtyInput.value, 10);
+  return Number.isFinite(qty) && qty > 0 ? qty : 1;
+}
+
+function updatePriceDisplay(product) {
+  const qty = currentQty();
+  const unitPrice = priceForQty(product, qty);
+  const priceEl = document.getElementById("product-price");
+  if (qty > 1) {
+    const total = unitPrice * qty;
+    priceEl.textContent = `${unitPrice.toFixed(2).replace(".", ",")} € / Stück · Gesamt ${total.toFixed(2).replace(".", ",")} €`;
+  } else {
+    priceEl.textContent = `${unitPrice.toFixed(2).replace(".", ",")} €`;
+  }
+}
+
 function renderFields(product) {
   const container = document.getElementById("fields");
   product.fields.forEach((field) => {
@@ -173,9 +226,14 @@ function collectOrder(product) {
       values[field.id] = img ? img.src : null;
     }
   }
+  const qty = currentQty();
+  const unitPrice = priceForQty(product, qty);
   return {
     productId: product.id,
     values,
+    qty,
+    unitPrice,
+    totalPrice: unitPrice * qty,
     createdAt: Date.now()
   };
 }
@@ -193,8 +251,10 @@ async function initProductPage() {
 
   document.title = `${product.name} individualisieren`;
   document.getElementById("product-name").textContent = product.name;
-  document.getElementById("product-price").textContent =
-    product.price.toFixed(2).replace(".", ",") + " €";
+  renderTierTable(product);
+  renderStockNote(product);
+  updatePriceDisplay(product);
+  document.getElementById("qty").addEventListener("input", () => updatePriceDisplay(product));
 
   if (!product.canvas) {
     const bgImage = await getBackground(product);

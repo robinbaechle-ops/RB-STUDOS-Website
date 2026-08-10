@@ -56,6 +56,13 @@
       <section class="customizer-form">
         <h1 id="product-name"></h1>
         <p class="price" id="product-price"></p>
+        <ul class="tier-table" id="tier-table" hidden></ul>
+        <p class="stock-note" id="stock-note" hidden></p>
+
+        <div class="field qty-field">
+          <label for="qty">Menge</label>
+          <input type="number" id="qty" min="1" step="1" value="1">
+        </div>
 
         <form id="fields" onsubmit="return false;"></form>
 

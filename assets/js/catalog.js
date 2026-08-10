@@ -12,13 +12,25 @@ async function renderCatalog() {
   }
 
   list.forEach((product) => {
+    const priceLabel = product.tiers.length > 1
+      ? `ab ${product.price.toFixed(2).replace(".", ",")} €`
+      : `${product.price.toFixed(2).replace(".", ",")} €`;
+
+    let stockLabel = "";
+    if (product.stock !== null) {
+      stockLabel = product.stock > 0
+        ? `<p class="stock">Kurzfristig verfügbar: ${product.stock} Stück</p>`
+        : `<p class="stock out">Aktuell ausverkauft</p>`;
+    }
+
     const card = document.createElement("article");
     card.className = "product-card";
     card.innerHTML = `
       <img class="thumb" src="${product.thumb}" alt="${product.name}">
       <div class="body">
         <h2>${product.name}</h2>
-        <p class="price">${product.price.toFixed(2).replace(".", ",")} €</p>
+        <p class="price">${priceLabel}</p>
+        ${stockLabel}
         <p class="desc">${product.desc}</p>
         <a class="btn" href="product.html?product=${product.id}">Nun individualisieren</a>
       </div>

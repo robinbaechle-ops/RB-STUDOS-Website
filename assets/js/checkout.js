@@ -29,10 +29,15 @@ async function initCheckout() {
     return;
   }
 
+  const qty = order.qty || 1;
+  const unitPrice = order.unitPrice !== undefined ? order.unitPrice : product.price;
+  const totalPrice = order.totalPrice !== undefined ? order.totalPrice : unitPrice * qty;
+
   document.getElementById("order-summary").hidden = false;
-  document.getElementById("order-product").textContent = product.name;
-  document.getElementById("order-price").textContent =
-    product.price.toFixed(2).replace(".", ",") + " €";
+  document.getElementById("order-product").textContent = `${product.name} (${qty} Stück)`;
+  document.getElementById("order-price").textContent = qty > 1
+    ? `${qty} × ${unitPrice.toFixed(2).replace(".", ",")} € = ${totalPrice.toFixed(2).replace(".", ",")} €`
+    : `${totalPrice.toFixed(2).replace(".", ",")} €`;
   renderOrderValues(product, order.values);
 
   document.getElementById("submit-order-btn").addEventListener("click", () => {

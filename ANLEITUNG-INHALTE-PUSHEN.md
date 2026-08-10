@@ -12,12 +12,20 @@ Arbeite außerdem auf dem Branch **`claude/laser-engraving-website-jiijfe`** —
 
 Die meisten Produkte (ein Foto, ein optionales Textfeld zur Personalisierung) pflegst du direkt in **`assets/data/produkte.csv`** — das ist eine CSV-Datei, die sich in Excel wie eine ganz normale Tabelle öffnen und bearbeiten lässt.
 
-**Spalten:** `Artikelname` · `Artikelbeschreibung` · `Art` (`Laser` oder `3D`) · `Preis` · `Bildname`
+**Spalten:** `Artikelname` · `Artikelbeschreibung` · `Art` (`Laser` oder `3D`) · `VK gerundet` · `VK 2 Stk` · `VK 5 Stk` · `VK 10 Stk` · `VK 25 Stk` · `Bildname` · `Bestand`
 
 1. Öffne `produkte.csv` in Excel (Rechtsklick → Öffnen mit → Excel, falls es nicht automatisch dort aufgeht).
-2. Neue Zeile mit den fünf Spalten ausfüllen. Bei `Art` genau `Laser` oder `3D` eintragen — das entscheidet, auf welcher Katalogseite das Produkt erscheint.
+2. Neue Zeile ausfüllen. Bei `Art` genau `Laser` oder `3D` eintragen — das entscheidet, auf welcher Katalogseite das Produkt erscheint.
 3. `Bildname` ist ein **Ordnername**, kein Dateiname — siehe nächster Abschnitt.
 4. In Excel ganz normal **Speichern** (nicht "Speichern unter" und dabei aus Versehen `.xlsx` wählen — die Datei muss `.csv` bleiben).
+
+### Mengenstaffel-Preise
+
+`VK gerundet` ist der Stückpreis bei 1 Stück, die restlichen Spalten die Stückpreise ab 2/5/10/25 Stück. Nicht alle Spalten sind Pflicht — leer gelassene Staffeln werden einfach übersprungen. Bestellt ein Kunde z. B. 7 Stück, greift automatisch der Preis der **nächstniedrigeren** befüllten Staffel (hier: der VK-5-Stk-Preis).
+
+### Bestand
+
+`Bestand` ist optional und zeigt auf der Website die kurzfristig verfügbare Stückzahl an (z. B. "Kurzfristig verfügbar: 12 Stück", oder "Aktuell ausverkauft" bei `0`). Leer lassen, wenn für dieses Produkt kein Lagerbestand geführt wird — dann erscheint gar kein Hinweis. Der Bestand wird beim Bestellen aktuell **nicht automatisch reduziert**, das ist Handarbeit: nach jeder Bestellung die Zahl in der Excel anpassen und "aktualisieren" sagen.
 
 ### Produktfotos (Galerie)
 

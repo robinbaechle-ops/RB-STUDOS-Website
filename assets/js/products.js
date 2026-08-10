@@ -2,7 +2,11 @@
  * Produktkatalog.
  *
  * Einfache Produkte: über assets/data/produkte.csv (in Excel pflegbar).
- * Spalten: Artikelname, Artikelbeschreibung, Art (Laser/3D), Preis, Bildname.
+ * Spalten: Artikelname, Artikelbeschreibung, Art (Laser/3D),
+ * VK gerundet, VK 2 Stk, VK 5 Stk, VK 10 Stk, VK 25 Stk, Bildname, Bestand.
+ * Die VK-Spalten sind Stückpreise je Mengenstaffel — leer bleiben ist ok,
+ * dann greift die nächstniedrigere Stufe. "Bestand" ist optional (z.B. bei
+ * 3D-Druck-Zeilen leer lassen, wenn kein Lager geführt wird).
  * "Bildname" ist der Ordnername unter assets/products/, mit nummerierten
  * Fotos darin (1.jpg, 2.jpg, …). Jedes einfache Produkt bekommt automatisch
  * ein zentriertes Textfeld zur Personalisierung.
@@ -37,7 +41,39 @@ function normalizeCategory(raw) {
 }
 
 function parsePrice(raw) {
-  return parseFloat(String(raw).replace(",", ".")) || 0;
+  const n = parseFloat(String(raw).replace(",", "."));
+  return Number.isFinite(n) ? n : null;
+}
+
+const TIER_COLUMNS = [
+  { qty: 1, key: "VK gerundet" },
+  { qty: 2, key: "VK 2 Stk" },
+  { qty: 5, key: "VK 5 Stk" },
+  { qty: 10, key: "VK 10 Stk" },
+  { qty: 25, key: "VK 25 Stk" }
+];
+
+function buildTiers(row) {
+  const tiers = TIER_COLUMNS
+    .map(({ qty, key }) => ({ qty, price: parsePrice(row[key]) }))
+    .filter((tier) => tier.price !== null);
+  return tiers.length ? tiers : [{ qty: 1, price: 0 }];
+}
+
+function parseStock(raw) {
+  const v = String(raw || "").trim();
+  if (!v) return null;
+  const n = parseInt(v, 10);
+  return Number.isFinite(n) ? n : null;
+}
+
+// Stückpreis für eine Menge: greift immer die nächstniedrigere Staffel.
+function priceForQty(product, qty) {
+  let match = product.tiers[0];
+  for (const tier of product.tiers) {
+    if (tier.qty <= qty) match = tier;
+  }
+  return match.price;
 }
 
 const ADVANCED_PRODUCTS = {
@@ -81,11 +117,14 @@ async function buildSimpleProduct(row) {
   const id = slugify(name);
   const folder = (row["Bildname"] || "").trim() || null;
   const cover = await loadCoverImage(folder);
+  const tiers = buildTiers(row);
 
   return {
     id,
     name,
-    price: parsePrice(row["Preis"]),
+    tiers,
+    price: tiers[0].price,
+    stock: parseStock(row["Bestand"]),
     desc: row["Artikelbeschreibung"] || "",
     category: normalizeCategory(row["Art"]),
     folder,
@@ -113,6 +152,8 @@ async function loadProducts() {
 
   Object.values(products).forEach((product) => {
     product.thumb = product.image || placeholderThumb(product.name);
+    if (!product.tiers) product.tiers = [{ qty: 1, price: product.price }];
+    if (product.stock === undefined) product.stock = null;
   });
 
   return products;

@@ -409,6 +409,16 @@ main.page .price {
   margin: 0 0 4px;
 }
 
+.product-card .stock {
+  font-size: .78rem;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+
+.product-card .stock.out {
+  color: var(--accent-ink);
+}
+
 .product-card .desc {
   color: var(--text-muted);
   font-size: .88rem;
@@ -578,7 +588,42 @@ main.page .price {
   font-weight: 500;
   color: var(--accent-ink);
   font-size: 1.05rem;
-  margin: 0 0 36px;
+  margin: 0 0 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.tier-table {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tier-table li {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 16px;
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  font-size: .85rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.stock-note {
+  font-size: .82rem;
+  color: var(--text-muted);
+  margin: 0 0 24px;
+}
+
+.stock-note.out {
+  color: var(--accent-ink);
+}
+
+.qty-field input[type="number"] {
+  max-width: 120px;
 }
 
 .field {
@@ -608,6 +653,7 @@ main.page .price {
 
 .field input[type="text"],
 .field input[type="email"],
+.field input[type="number"],
 .field textarea,
 .field select {
   width: 100%;
@@ -628,6 +674,7 @@ main.page .price {
 
 .field input[type="text"]:focus-visible,
 .field input[type="email"]:focus-visible,
+.field input[type="number"]:focus-visible,
 .field textarea:focus-visible,
 .field select:focus-visible {
   outline: none;
