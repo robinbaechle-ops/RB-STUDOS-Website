@@ -3,13 +3,17 @@
  *
  * Einfache Produkte: über assets/data/produkte.csv (in Excel pflegbar).
  * Spalten: Artikelname, Artikelbeschreibung, Art (Laser/3D),
- * VK gerundet, VK 2 Stk, VK 5 Stk, VK 10 Stk, VK 25 Stk, Bildname, Bestand.
+ * VK gerundet, VK 2 Stk, VK 5 Stk, VK 10 Stk, VK 25 Stk, Bildname, Bestand,
+ * KI Prompt.
  * Die VK-Spalten sind Stückpreise je Mengenstaffel — leer bleiben ist ok,
  * dann greift die nächstniedrigere Stufe. "Bestand" ist optional (z.B. bei
  * 3D-Druck-Zeilen leer lassen, wenn kein Lager geführt wird).
  * "Bildname" ist der Ordnername unter assets/products/, mit nummerierten
  * Fotos darin (1.jpg, 2.jpg, …). Jedes einfache Produkt bekommt automatisch
  * ein zentriertes Textfeld zur Personalisierung.
+ * "KI Prompt" steuert die KI-Bildvorschau für dieses Produkt (z.B. "Zeige
+ * das Motiv als Lasergravur auf einer hellen Holzplatte, fotorealistisch."
+ * ) — leer lassen für einen generischen Standard-Prompt.
  *
  * Fortgeschrittene Produkte (mehrere Textfelder, Foto-Upload-Feld) bleiben
  * unten in ADVANCED_PRODUCTS von Hand gepflegt — dafür weiterhin
@@ -95,6 +99,7 @@ async function buildSimpleProduct(row) {
     stock: parseStock(row["Bestand"]),
     desc: row["Artikelbeschreibung"] || "",
     category: normalizeCategory(row["Art"]),
+    aiPrompt: (row["KI Prompt"] || "").trim() || null,
     folder,
     image: cover,
     bgColor: "#E4DFD2",

@@ -234,6 +234,7 @@ function collectOrder(product) {
     qty,
     unitPrice,
     totalPrice: unitPrice * qty,
+    aiPreviewImage: getConfirmedAiPreview(),
     createdAt: Date.now()
   };
 }
@@ -272,6 +273,7 @@ async function initProductPage() {
   }
 
   renderFields(product);
+  initAiPreview(product);
   document.fonts.ready.then(() => drawPreview(product));
 
   document.getElementById("generate-btn").addEventListener("click", () => drawPreview(product));

@@ -75,6 +75,32 @@
           <button class="btn" id="generate-btn" type="button">Vorschau generieren</button>
           <button class="btn primary" id="order-btn" type="button">Jetzt bestellen</button>
         </div>
+
+        <section class="ai-preview" id="ai-preview">
+          <h2>KI-Vorschau (optional)</h2>
+          <div class="field">
+            <label for="ai-photo-input">Eigenes Foto hochladen</label>
+            <input type="file" id="ai-photo-input" accept="image/png, image/jpeg">
+            <span class="hint">Falls du bereits eine genaue Vorstellung deines Designs hast, kannst du hier ein Bild hochladen — die Software wandelt es in eine Vorschau des möglichen Produktergebnisses um. Auch ohne Foto kannst du direkt aus deinen obigen Texteingaben eine Vorschau erzeugen lassen. Hochgeladene Bilder und Texte werden dafür an einen externen KI-Dienst (Google Gemini) übermittelt und dort verarbeitet — Details dazu in unseren <a href="agb.html">AGB</a> und der <a href="datenschutz.html">Datenschutzerklärung</a>.</span>
+          </div>
+
+          <button class="btn" id="ai-generate-btn" type="button">KI-Vorschau erzeugen</button>
+          <p class="ai-status" id="ai-status" hidden></p>
+
+          <div class="ai-result" id="ai-result" hidden>
+            <img id="ai-result-img" alt="KI-generierte Vorschau">
+            <div class="actions">
+              <button class="btn primary" id="ai-good-btn" type="button">Gut</button>
+              <button class="btn" id="ai-refine-btn" type="button">Nochmals anpassen</button>
+            </div>
+          </div>
+
+          <div class="ai-refine" id="ai-refine" hidden>
+            <label for="ai-refine-text">Erklär noch etwas genauer, wie das Bild geändert werden soll</label>
+            <textarea id="ai-refine-text" maxlength="300" placeholder="z. B. Schrift größer, Motiv weiter nach links, wärmerer Farbton …"></textarea>
+            <button class="btn" id="ai-refine-submit" type="button">Anpassung erzeugen</button>
+          </div>
+        </section>
       </section>
     </div>
   </main>
@@ -83,11 +109,13 @@
     <p>&copy; <span id="copyright-year"></span> Studio RB. Alle Rechte vorbehalten.</p>
     <a href="impressum.html">Impressum</a>
     <a href="agb.html">AGB</a>
+    <a href="datenschutz.html">Datenschutz</a>
   </footer>
 
   <script src="assets/js/csv.js"></script>
   <script src="assets/js/images.js"></script>
   <script src="assets/js/products.js"></script>
+  <script src="assets/js/ai-preview.js"></script>
   <script src="assets/js/customizer.js"></script>
   <script src="assets/js/nav.js"></script>
 </body>

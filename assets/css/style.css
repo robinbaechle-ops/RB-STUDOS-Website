@@ -713,6 +713,76 @@ main.page .price {
   margin-top: 8px;
 }
 
+/* ---------- KI-Vorschau ---------- */
+.ai-preview {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.ai-preview h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  margin: 0 0 20px;
+}
+
+.ai-status {
+  font-size: .85rem;
+  color: var(--text-muted);
+  margin: 14px 0 0;
+}
+
+.ai-status.error {
+  color: var(--accent-ink);
+}
+
+.ai-result {
+  margin-top: 20px;
+}
+
+.ai-result img {
+  width: 100%;
+  max-width: 420px;
+  border-radius: var(--radius-lg);
+  display: block;
+  margin-bottom: 16px;
+}
+
+.ai-refine {
+  margin-top: 20px;
+}
+
+.ai-refine label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: .74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.ai-refine textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 13px 18px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  resize: vertical;
+  margin-bottom: 14px;
+}
+
+.ai-refine textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+}
+
 /* ---------- contact form ---------- */
 .contact-form {
   max-width: 560px;

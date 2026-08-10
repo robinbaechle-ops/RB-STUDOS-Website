@@ -12,7 +12,7 @@ Arbeite außerdem auf dem Branch **`claude/laser-engraving-website-jiijfe`** —
 
 Die meisten Produkte (ein Foto, ein optionales Textfeld zur Personalisierung) pflegst du direkt in **`assets/data/produkte.csv`** — das ist eine CSV-Datei, die sich in Excel wie eine ganz normale Tabelle öffnen und bearbeiten lässt.
 
-**Spalten:** `Artikelname` · `Artikelbeschreibung` · `Art` (`Laser` oder `3D`) · `VK gerundet` · `VK 2 Stk` · `VK 5 Stk` · `VK 10 Stk` · `VK 25 Stk` · `Bildname` · `Bestand`
+**Spalten:** `Artikelname` · `Artikelbeschreibung` · `Art` (`Laser` oder `3D`) · `VK gerundet` · `VK 2 Stk` · `VK 5 Stk` · `VK 10 Stk` · `VK 25 Stk` · `Bildname` · `Bestand` · `KI Prompt`
 
 1. Öffne `produkte.csv` in Excel (Rechtsklick → Öffnen mit → Excel, falls es nicht automatisch dort aufgeht).
 2. Neue Zeile ausfüllen. Bei `Art` genau `Laser` oder `3D` eintragen — das entscheidet, auf welcher Katalogseite das Produkt erscheint.
@@ -26,6 +26,10 @@ Die meisten Produkte (ein Foto, ein optionales Textfeld zur Personalisierung) pf
 ### Bestand
 
 `Bestand` ist optional und zeigt auf der Website die kurzfristig verfügbare Stückzahl an (z. B. "Kurzfristig verfügbar: 12 Stück", oder "Aktuell ausverkauft" bei `0`). Leer lassen, wenn für dieses Produkt kein Lagerbestand geführt wird — dann erscheint gar kein Hinweis. Der Bestand wird beim Bestellen aktuell **nicht automatisch reduziert**, das ist Handarbeit: nach jeder Bestellung die Zahl in der Excel anpassen und "aktualisieren" sagen.
+
+### KI-Vorschau
+
+`KI Prompt` ist optional und steuert, wie die KI-Bildvorschau auf der Produktseite dieses Produkt darstellt (z. B. "Zeige das Motiv als Lasergravur auf heller Erle, fotorealistisch"). Leer lassen für einen automatischen Standard-Prompt. Einrichtung der KI-Anbindung selbst: siehe `ANLEITUNG-KI-VORSCHAU.md`.
 
 ### Produktfotos (Galerie)
 

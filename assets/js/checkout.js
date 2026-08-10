@@ -1,5 +1,6 @@
-function renderOrderValues(product, values) {
+function renderOrderValues(product, order) {
   const list = document.getElementById("order-values");
+  const values = order.values;
   product.fields.forEach((field) => {
     const li = document.createElement("li");
     const value = values[field.id];
@@ -16,6 +17,12 @@ function renderOrderValues(product, values) {
 
     list.appendChild(li);
   });
+
+  if (order.aiPreviewImage) {
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>Bestätigte KI-Vorschau:</strong><br><img class="order-thumb" src="${order.aiPreviewImage}" alt="KI-generierte Vorschau">`;
+    list.appendChild(li);
+  }
 }
 
 async function initCheckout() {
@@ -38,7 +45,7 @@ async function initCheckout() {
   document.getElementById("order-price").textContent = qty > 1
     ? `${qty} × ${unitPrice.toFixed(2).replace(".", ",")} € = ${totalPrice.toFixed(2).replace(".", ",")} €`
     : `${totalPrice.toFixed(2).replace(".", ",")} €`;
-  renderOrderValues(product, order.values);
+  renderOrderValues(product, order);
 
   document.getElementById("submit-order-btn").addEventListener("click", () => {
     sessionStorage.removeItem("rbstudio-order");
