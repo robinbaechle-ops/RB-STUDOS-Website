@@ -12,7 +12,7 @@ Arbeite außerdem auf dem Branch **`claude/laser-engraving-website-jiijfe`** —
 
 Die meisten Produkte (ein Foto, ein optionales Textfeld zur Personalisierung) pflegst du direkt in **`assets/data/produkte.csv`** — das ist eine CSV-Datei, die sich in Excel wie eine ganz normale Tabelle öffnen und bearbeiten lässt.
 
-**Spalten:** `Artikelname` · `Artikelbeschreibung` · `Art` (`Laser` oder `3D`) · `VK gerundet` · `VK 2 Stk` · `VK 5 Stk` · `VK 10 Stk` · `VK 25 Stk` · `Bildname` · `Bestand` · `KI Prompt`
+**Spalten:** `Artikelname` · `Artikelbeschreibung` · `Art` (`Laser` oder `3D`) · `VK gerundet` · `VK 2 Stk` · `VK 5 Stk` · `VK 10 Stk` · `VK 25 Stk` · `Bildname` · `Bestand` · `KI Prompt` · `KI Generierung` · `Zusatzprodukte`
 
 1. Öffne `produkte.csv` in Excel (Rechtsklick → Öffnen mit → Excel, falls es nicht automatisch dort aufgeht).
 2. Neue Zeile ausfüllen. Bei `Art` genau `Laser` oder `3D` eintragen — das entscheidet, auf welcher Katalogseite das Produkt erscheint.
@@ -30,6 +30,18 @@ Die meisten Produkte (ein Foto, ein optionales Textfeld zur Personalisierung) pf
 ### KI-Vorschau
 
 `KI Prompt` ist optional und steuert, wie die KI-Bildvorschau auf der Produktseite dieses Produkt darstellt (z. B. "Zeige das Motiv als Lasergravur auf heller Erle, fotorealistisch"). Leer lassen für einen automatischen Standard-Prompt. Einrichtung der KI-Anbindung selbst: siehe `ANLEITUNG-KI-VORSCHAU.md`.
+
+`KI Generierung` steuert, ob das Produkt überhaupt personalisierbar ist. Leer lassen oder `Ja` eintragen = normales Produkt mit Textfeld und KI-Vorschau (Standard). Trag **`Nein`** ein für reine Kaufprodukte ohne jede Individualisierung — dann verschwinden auf der Produktseite sowohl das Textfeld als auch die komplette KI-Vorschau, es bleibt nur ein normaler Bestellablauf mit Foto, Preis und Bestellbutton.
+
+### Zusatzprodukte
+
+`Zusatzprodukte` ist optional und zeigt auf der Produktseite einen Bereich "Passt dazu" mit Links zu anderen Produkten. Trag einfach die **Artikelnamen** der passenden Produkte ein, durch Komma getrennt, z. B.:
+
+```
+Schlüsselanhänger, Flaschenöffner rund
+```
+
+Die Website erkennt automatisch, welches Produkt gemeint ist, und verlinkt zur richtigen Produktseite. Schreibfehler oder unbekannte Namen werden als reiner Text angezeigt (kein kaputter Link).
 
 ### Produktfotos (Galerie)
 

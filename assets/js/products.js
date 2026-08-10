@@ -4,7 +4,7 @@
  * Einfache Produkte: über assets/data/produkte.csv (in Excel pflegbar).
  * Spalten: Artikelname, Artikelbeschreibung, Art (Laser/3D),
  * VK gerundet, VK 2 Stk, VK 5 Stk, VK 10 Stk, VK 25 Stk, Bildname, Bestand,
- * KI Prompt.
+ * KI Prompt, KI Generierung, Zusatzprodukte.
  * Die VK-Spalten sind Stückpreise je Mengenstaffel — leer bleiben ist ok,
  * dann greift die nächstniedrigere Stufe. "Bestand" ist optional (z.B. bei
  * 3D-Druck-Zeilen leer lassen, wenn kein Lager geführt wird).
@@ -14,6 +14,12 @@
  * "KI Prompt" steuert die KI-Bildvorschau für dieses Produkt (z.B. "Zeige
  * das Motiv als Lasergravur auf einer hellen Holzplatte, fotorealistisch."
  * ) — leer lassen für einen generischen Standard-Prompt.
+ * "KI Generierung": "Nein" eintragen für reine Kaufprodukte ohne
+ * Personalisierung — dann gibt es weder Textfeld noch KI-Vorschau. Leer
+ * oder "Ja" = normales personalisierbares Produkt (Standard).
+ * "Zusatzprodukte": kommagetrennte Liste mit Artikelnamen (oder Links) von
+ * passenden Produkten, die auf der Produktseite als "Passt dazu" angezeigt
+ * werden.
  *
  * Fortgeschrittene Produkte (mehrere Textfelder, Foto-Upload-Feld) bleiben
  * unten in ADVANCED_PRODUCTS von Hand gepflegt — dafür weiterhin
@@ -80,6 +86,36 @@ function priceForQty(product, qty) {
   return match.price;
 }
 
+function parseAiEnabled(raw) {
+  const v = (raw || "").trim().toLowerCase();
+  return v !== "nein" && v !== "no";
+}
+
+function parseRelated(raw) {
+  return (raw || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+// Ordnet einen Zusatzprodukt-Eintrag (Artikelname, Slug oder Link) einem
+// bekannten Produkt zu, damit "Passt dazu" auf die richtige Produktseite
+// verlinkt statt nur den Rohtext anzuzeigen.
+function resolveRelatedLink(entry, products) {
+  const urlMatch = /product\.html\?product=([^&]+)/i.exec(entry);
+  const slugSource = urlMatch ? decodeURIComponent(urlMatch[1]) : entry;
+
+  if (!urlMatch && /^https?:\/\//i.test(entry)) {
+    return { href: entry, label: entry };
+  }
+
+  const product = products[slugify(slugSource)];
+  if (product) {
+    return { href: `product.html?product=${product.id}`, label: product.name };
+  }
+  return { href: null, label: entry };
+}
+
 // Produkte mit mehreren Feldern / Foto-Upload: hier per Hand eintragen,
 // am einfachsten per tools/designer.html erzeugen und einfügen.
 const ADVANCED_PRODUCTS = {};
@@ -90,6 +126,7 @@ async function buildSimpleProduct(row) {
   const folder = (row["Bildname"] || "").trim() || null;
   const cover = await loadCoverImage(folder);
   const tiers = buildTiers(row);
+  const aiEnabled = parseAiEnabled(row["KI Generierung"]);
 
   return {
     id,
@@ -100,13 +137,15 @@ async function buildSimpleProduct(row) {
     desc: row["Artikelbeschreibung"] || "",
     category: normalizeCategory(row["Art"]),
     aiPrompt: (row["KI Prompt"] || "").trim() || null,
+    aiEnabled,
+    relatedRaw: parseRelated(row["Zusatzprodukte"]),
     folder,
     image: cover,
     bgColor: "#E4DFD2",
     canvas: null, // wird beim Laden des Fotos auf dessen Maße gesetzt
-    fields: [
-      { id: "text1", type: "text", label: "Dein Text (optional)", maxLength: 24, x: 0.5, y: 0.5, size: 32, align: "center" }
-    ]
+    fields: aiEnabled
+      ? [{ id: "text1", type: "text", label: "Dein Text (optional)", maxLength: 24, x: 0.5, y: 0.5, size: 32, align: "center" }]
+      : []
   };
 }
 
@@ -127,6 +166,8 @@ async function loadProducts() {
     product.thumb = product.image || placeholderThumb(product.name);
     if (!product.tiers) product.tiers = [{ qty: 1, price: product.price }];
     if (product.stock === undefined) product.stock = null;
+    if (product.aiEnabled === undefined) product.aiEnabled = true;
+    product.related = (product.relatedRaw || []).map((entry) => resolveRelatedLink(entry, products));
   });
 
   return products;

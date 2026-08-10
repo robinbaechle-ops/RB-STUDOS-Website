@@ -107,6 +107,22 @@ function renderStockNote(product) {
   }
 }
 
+function renderRelated(product) {
+  const section = document.getElementById("related-products");
+  const list = document.getElementById("related-list");
+  if (!section || !list) return;
+
+  if (!product.related || !product.related.length) {
+    section.hidden = true;
+    return;
+  }
+
+  section.hidden = false;
+  list.innerHTML = product.related
+    .map((r) => (r.href ? `<li><a href="${r.href}">${r.label}</a></li>` : `<li>${r.label}</li>`))
+    .join("");
+}
+
 function currentQty() {
   const qtyInput = document.getElementById("qty");
   const qty = parseInt(qtyInput.value, 10);
@@ -273,8 +289,16 @@ async function initProductPage() {
   }
 
   renderFields(product);
-  initAiPreview(product);
+  renderRelated(product);
   document.fonts.ready.then(() => drawPreview(product));
+
+  if (product.aiEnabled) {
+    initAiPreview(product);
+  } else {
+    document.getElementById("engrave-field").hidden = true;
+    document.getElementById("generate-btn").hidden = true;
+    document.getElementById("ai-preview").hidden = true;
+  }
 
   document.getElementById("generate-btn").addEventListener("click", () => drawPreview(product));
   document.getElementById("engrave-toggle").addEventListener("change", () => drawPreview(product));

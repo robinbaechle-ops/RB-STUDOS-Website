@@ -66,7 +66,7 @@
 
         <form id="fields" onsubmit="return false;"></form>
 
-        <label class="checkbox-field">
+        <label class="checkbox-field" id="engrave-field">
           <input type="checkbox" id="engrave-toggle">
           Gravur-Vorschau (Graustufen)
         </label>
@@ -100,6 +100,11 @@
             <textarea id="ai-refine-text" maxlength="300" placeholder="z. B. Schrift größer, Motiv weiter nach links, wärmerer Farbton …"></textarea>
             <button class="btn" id="ai-refine-submit" type="button">Anpassung erzeugen</button>
           </div>
+        </section>
+
+        <section class="related-products" id="related-products" hidden>
+          <h2>Passt dazu</h2>
+          <ul id="related-list"></ul>
         </section>
       </section>
     </div>

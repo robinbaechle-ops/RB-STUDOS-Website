@@ -64,6 +64,12 @@ body {
   * { transition: none !important; animation: none !important; }
 }
 
+/* Elemente mit eigenem "display" (Flex/Grid) würden sonst das
+   hidden-Attribut ignorieren, da Autor-Regeln die UA-Vorgabe schlagen. */
+[hidden] {
+  display: none !important;
+}
+
 a { color: var(--accent-ink); }
 
 .site-header {
@@ -781,6 +787,33 @@ main.page .price {
 .ai-refine textarea:focus-visible {
   outline: none;
   border-color: var(--accent);
+}
+
+/* ---------- Zusatzprodukte ---------- */
+.related-products {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.related-products h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  margin: 0 0 16px;
+}
+
+.related-products ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.related-products a {
+  color: var(--accent-ink);
 }
 
 /* ---------- contact form ---------- */
