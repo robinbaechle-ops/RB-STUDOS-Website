@@ -98,18 +98,19 @@ function parseRelated(raw) {
     .filter(Boolean);
 }
 
-// Ordnet einen Zusatzprodukt-Eintrag (Artikelname, Slug oder Link) einem
-// bekannten Produkt zu, damit "Passt dazu" auf die richtige Produktseite
-// verlinkt statt nur den Rohtext anzuzeigen.
+// Ordnet einen Zusatzprodukt-Eintrag einem bekannten Produkt zu, damit
+// "Passt dazu" auf die richtige Produktseite verlinkt statt nur den
+// Rohtext anzuzeigen. Erlaubte Formate: Artikelname ("Schlüsselanhänger"),
+// reine URL ("https://…") oder beschriftete URL ("USB Adapter: https://…").
 function resolveRelatedLink(entry, products) {
-  const urlMatch = /product\.html\?product=([^&]+)/i.exec(entry);
-  const slugSource = urlMatch ? decodeURIComponent(urlMatch[1]) : entry;
-
-  if (!urlMatch && /^https?:\/\//i.test(entry)) {
-    return { href: entry, label: entry };
+  const urlMatch = /(https?:\/\/\S+)/i.exec(entry);
+  if (urlMatch) {
+    const url = urlMatch[1];
+    const label = entry.slice(0, urlMatch.index).replace(/:\s*$/, "").trim();
+    return { href: url, label: label || url };
   }
 
-  const product = products[slugify(slugSource)];
+  const product = products[slugify(entry)];
   if (product) {
     return { href: `product.html?product=${product.id}`, label: product.name };
   }
