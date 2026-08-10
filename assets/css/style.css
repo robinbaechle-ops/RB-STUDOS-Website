@@ -848,6 +848,28 @@ main.page .price {
   max-width: 560px;
 }
 
+.form-status.error {
+  color: var(--accent-ink);
+}
+
+/* ---------- 3D-Druck-Preisanfrage ---------- */
+.print-request {
+  margin-top: 72px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+
+.print-request h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 1.3rem + .8vw, 1.9rem);
+  margin: 0 0 10px;
+}
+
+.print-request .intro {
+  margin: 0 0 28px;
+}
+
 /* ---------- footer ---------- */
 .site-footer {
   border-top: 1px solid var(--border);

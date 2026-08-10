@@ -41,6 +41,38 @@
     <h1>3D-Druck</h1>
     <p class="intro">Individualisierte 3D-gedruckte Stücke aus dem Atelier. Vorlage wählen, individualisieren, bestellen.</p>
     <div class="product-grid" id="product-grid" data-category="3D"></div>
+
+    <section class="print-request" id="print-request">
+      <h2>Eigene 3D-Datei hochladen &amp; Preis anfragen</h2>
+      <p class="intro">Du hast schon eine eigene 3D-Datei? Lade sie hoch, wir melden uns mit einem Preisangebot.</p>
+
+      <form class="contact-form" id="print-request-form" onsubmit="return false;">
+        <div class="form-row">
+          <div class="field">
+            <label for="pr-name">Name</label>
+            <input type="text" id="pr-name" required>
+          </div>
+          <div class="field">
+            <label for="pr-email">E-Mail</label>
+            <input type="email" id="pr-email" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="pr-file">3D-Datei</label>
+          <input type="file" id="pr-file" accept=".stl,.3mf,.obj,.step,.stp" required>
+          <span class="hint">Max. ca. 15 MB (STL, 3MF, OBJ, STEP). Deine Datei wird zur Bearbeitung deiner Anfrage per E-Mail an uns übermittelt — Details in der <a href="datenschutz.html">Datenschutzerklärung</a>.</span>
+        </div>
+
+        <div class="field">
+          <label for="pr-message">Nachricht (optional)</label>
+          <textarea id="pr-message" maxlength="1000" placeholder="Material, Menge, Farbe, gewünschter Termin …"></textarea>
+        </div>
+
+        <button class="btn primary" id="pr-submit" type="button">Anfrage senden</button>
+        <p class="form-status" id="pr-status" hidden></p>
+      </form>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -54,6 +86,7 @@
   <script src="assets/js/images.js"></script>
   <script src="assets/js/products.js"></script>
   <script src="assets/js/catalog.js"></script>
+  <script src="assets/js/print-request.js"></script>
   <script src="assets/js/nav.js"></script>
 </body>
 </html>
