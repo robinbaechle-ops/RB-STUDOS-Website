@@ -378,6 +378,10 @@ main.page .price {
   flex-direction: column;
 }
 
+.product-card > a {
+  display: block;
+}
+
 .product-card .thumb {
   aspect-ratio: 5 / 4;
   width: 100%;

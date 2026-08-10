@@ -26,7 +26,9 @@ async function renderCatalog() {
     const card = document.createElement("article");
     card.className = "product-card";
     card.innerHTML = `
-      <img class="thumb" src="${product.thumb}" alt="${product.name}">
+      <a href="product.html?product=${product.id}">
+        <img class="thumb" src="${product.thumb}" alt="${product.name}">
+      </a>
       <div class="body">
         <h2>${product.name}</h2>
         <p class="price">${priceLabel}</p>
