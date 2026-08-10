@@ -383,7 +383,7 @@ main.page .price {
 }
 
 .product-card .thumb {
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 4 / 3;
   width: 100%;
   display: block;
   background: var(--surface-2);
@@ -510,7 +510,7 @@ main.page .price {
 
 .gallery-main {
   width: 100%;
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: var(--radius-lg);
   background: var(--surface-2);

@@ -1,6 +1,6 @@
 const uploadedImages = {};
 const backgroundCache = {};
-const DEFAULT_CANVAS = { width: 460, height: 320 };
+const DEFAULT_CANVAS = { width: 480, height: 360 };
 
 async function getProductFromUrl() {
   const id = new URLSearchParams(window.location.search).get("product");
@@ -273,11 +273,10 @@ async function initProductPage() {
   updatePriceDisplay(product);
   document.getElementById("qty").addEventListener("input", () => updatePriceDisplay(product));
 
+  // Fester 4:3-Rahmen für alle Produkte — drawBackground() croppt jedes
+  // Foto per "cover" hinein, egal welches Seitenverhältnis das Original hat.
   if (!product.canvas) {
-    const bgImage = await getBackground(product);
-    product.canvas = bgImage
-      ? { width: bgImage.width, height: bgImage.height }
-      : DEFAULT_CANVAS;
+    product.canvas = DEFAULT_CANVAS;
   }
 
   const canvas = document.getElementById("preview-canvas");
@@ -298,6 +297,7 @@ async function initProductPage() {
     document.getElementById("engrave-field").hidden = true;
     document.getElementById("generate-btn").hidden = true;
     document.getElementById("ai-preview").hidden = true;
+    document.getElementById("preview-caption").hidden = true;
   }
 
   document.getElementById("generate-btn").addEventListener("click", () => drawPreview(product));
