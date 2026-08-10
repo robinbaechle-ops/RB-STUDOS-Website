@@ -119,9 +119,16 @@ async function handleAiGenerate(request, env) {
     (urls.length ? "&image=" + encodeURIComponent(urls.join("|")) : "") +
     "&width=1024&height=768&nologo=true&referrer=studio-rb.net";
 
+  // Das "kontext"-Modell (Bild-zu-Bild) erfordert seit Kurzem einen
+  // kostenlosen API-Key von enter.pollinations.ai (wöchentliches
+  // Freikontingent, keine Kreditkarte nötig).
+  const pollinationsHeaders = env.POLLINATIONS_API_KEY
+    ? { Authorization: `Bearer ${env.POLLINATIONS_API_KEY}` }
+    : {};
+
   let imgResponse;
   try {
-    imgResponse = await fetch(pollinationsUrl);
+    imgResponse = await fetch(pollinationsUrl, { headers: pollinationsHeaders });
   } catch (err) {
     console.error("Pollinations-Aufruf fehlgeschlagen:", err);
     return jsonResponse({ error: "KI-Dienst nicht erreichbar." }, 502);

@@ -1,6 +1,6 @@
 # Anleitung: KI-Vorschau einrichten (Cloudflare Worker + Pollinations.ai)
 
-Die Website kann aus einem hochgeladenen Foto oder aus den eingegebenen Texten per KI eine Vorschau des Produktergebnisses erzeugen. Der Code dafür ist bereits im Repository (`assets/js/ai-preview.js`, `product.html`, `cf-worker/`). Der Bilddienst dahinter ist **Pollinations.ai** — ein kostenloser Open-Source-Dienst, für den kein eigener Account und kein API-Key nötig ist. Du musst nur **zwei Dinge einmalig in deinem Cloudflare-Konto einrichten**: den Worker selbst und einen kleinen Zwischenspeicher (KV-Namespace).
+Die Website kann aus einem hochgeladenen Foto oder aus den eingegebenen Texten per KI eine Vorschau des Produktergebnisses erzeugen. Der Code dafür ist bereits im Repository (`assets/js/ai-preview.js`, `product.html`, `cf-worker/`). Der Bilddienst dahinter ist **Pollinations.ai** — ein kostenloser Open-Source-Dienst. Du musst **drei Dinge einmalig einrichten**: den Worker selbst, einen kleinen Zwischenspeicher (KV-Namespace) und einen kostenlosen Pollinations-API-Key.
 
 Hintergrund, warum das nötig ist: Google Gemini hat seinen kostenlosen Bild-API-Zugang inzwischen komplett abgeschafft (0 Anfragen erlaubt) — deshalb der Wechsel zu Pollinations.ai, das echt kostenlos bleibt. Einziger technischer Unterschied: Pollinations braucht öffentlich erreichbare Bild-URLs statt hochgeladener Dateien. Der Worker löst das automatisch, indem er hochgeladene Fotos für 10 Minuten in einem eigenen kleinen Cloudflare-Speicher (KV) zwischenlagert.
 
@@ -31,7 +31,19 @@ Das ist der neue Schritt gegenüber der vorherigen Einrichtung — Pollinations.
 5. **KV namespace**: den gerade erstellten `studio-rb-ai-tmp` auswählen.
 6. Speichern/Deploy.
 
-## Schritt 3: Eigene Domain für den Worker einrichten
+## Schritt 3: Kostenlosen Pollinations-API-Key erstellen
+
+Das für die Bild-Kombination nötige "kontext"-Modell verlangt inzwischen einen kostenlosen, registrierten API-Key (weiterhin ohne Kreditkarte — registrierte Nutzer bekommen automatisch ein wöchentliches Freikontingent, das für eine kleine Website locker reicht).
+
+1. Gehe auf **[enter.pollinations.ai](https://enter.pollinations.ai)** und registriere dich kostenlos (z. B. mit deiner E-Mail-Adresse).
+2. Erstelle einen neuen API-Key. Wähle dabei den Typ **"Secret Key"** (beginnt mit `sk_`) — nicht "Publishable Key", da der Key serverseitig im Worker verwendet wird.
+3. Kopiere den Key — trag ihn nirgendwo im Chat mit mir ein.
+4. Zurück in deinem Worker `studio-rb-ai` → **Settings** → **Variables and Secrets** → **Add**.
+5. Name: `POLLINATIONS_API_KEY`, Typ: **Secret**.
+6. Wert: der Key aus Schritt 3.
+7. Speichern.
+
+## Schritt 4: Eigene Domain für den Worker einrichten
 
 Falls noch nicht geschehen (aus einer früheren Einrichtung ist das evtl. schon erledigt):
 
@@ -39,20 +51,20 @@ Falls noch nicht geschehen (aus einer früheren Einrichtung ist das evtl. schon 
 2. Trage `ai.studio-rb.net` ein und bestätige.
 3. Cloudflare legt automatisch den passenden DNS-Eintrag an und stellt automatisch ein SSL-Zertifikat aus. Das kann ein paar Minuten dauern.
 
-## Schritt 4: Testen
+## Schritt 5: Testen
 
-1. Warte 2–3 Minuten nach Schritt 3 (falls neu eingerichtet).
+1. Warte 2–3 Minuten nach Schritt 4 (falls neu eingerichtet).
 2. Öffne eine beliebige Produktseite auf studio-rb.net, z. B. `studio-rb.net/product.html?product=schluesselanhaenger`.
 3. Klicke auf **"KI Vorschau generieren"** (auch ohne Foto-Upload möglich, dann nur mit deinem eingegebenen Text).
 4. Nach ein paar Sekunden sollte ein generiertes Bild erscheinen, darunter die Buttons **"Gut"** und **"Nochmals anpassen"**.
 
-Falls eine Fehlermeldung erscheint: meist liegt es am fehlenden KV-Binding (Schritt 2, Name muss exakt `AI_TMP` sein) oder daran, dass die Custom Domain noch nicht aktiv ist (Schritt 3). Sag mir Bescheid, ich helfe beim Debuggen — schau dazu am besten im Worker unter **Logs** nach der genauen Fehlermeldung und schick mir den Text.
+Falls eine Fehlermeldung erscheint: meist liegt es am fehlenden/falschen Secret (Schritt 3), am fehlenden KV-Binding (Schritt 2, Name muss exakt `AI_TMP` sein) oder daran, dass die Custom Domain noch nicht aktiv ist (Schritt 4). Sag mir Bescheid, ich helfe beim Debuggen — schau dazu am besten im Worker unter **Observability/Logs** nach der genauen Fehlermeldung und schick mir den Text.
 
 ---
 
-## Optional: Wasserzeichen entfernen / höheres Limit
+## Falls das wöchentliche Freikontingent doch mal knapp wird
 
-Pollinations.ai fügt anonymen Anfragen standardmäßig ein kleines Wasserzeichen hinzu und erlaubt nur eine Anfrage alle 15 Sekunden (für unsere Website völlig ausreichend). Wer möchte, kann sich kostenlos unter [auth.pollinations.ai](https://auth.pollinations.ai) registrieren und einen Token bekommen, der beides verbessert — das ist aber optional und nicht notwendig, damit die Funktion läuft.
+Sollte die Website stark genutzt werden und das wöchentliche Pollen-Freikontingent nicht mehr reichen, lässt sich bei [enter.pollinations.ai](https://enter.pollinations.ai) jederzeit zusätzliches Guthaben nachkaufen (kein Abo, reine Aufladung nach Bedarf) — das ist aber erst relevant, falls tatsächlich Fehlermeldungen wegen Kontingent auftauchen.
 
 ## Wie du den Prompt pro Produkt steuerst
 
