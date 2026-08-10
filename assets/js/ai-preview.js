@@ -60,17 +60,18 @@ function buildAiPrompt(product, values, hasReference, hasUpload) {
       `Erzeuge ein fotorealistisches Produktfoto von "${product.name}" (${product.desc || "personalisiertes Unikat"}), wie es nach der Fertigung aussehen würde.`
   ];
 
+  const texts = Object.values(values).filter((v) => v && typeof v === "string");
+
   if (hasReference && hasUpload) {
     parts.push("Das erste beigefügte Bild zeigt das echte, unbedruckte Produkt (Material, Form, Farbe) — nutze es als exakte Grundlage für das Ergebnis. Das zweite beigefügte Bild ist die Vorlage des Kunden: das kann entweder eine komplette Vorstellung des gewünschten Endprodukts sein oder nur ein einzelnes Motiv/Logo/Schriftzug, der auf das Produkt aus dem ersten Bild übertragen werden soll — erkenne selbst, welcher Fall vorliegt, und setze es entsprechend sinnvoll um.");
   } else if (hasReference) {
-    parts.push("Das beigefügte Bild zeigt das echte, unbedruckte Produkt (Material, Form, Farbe) — nutze es als exakte Grundlage für das Ergebnis.");
+    parts.push("Das beigefügte Bild zeigt das echte Produkt — es kann bereits einen Beispieltext oder ein Beispielmotiv zeigen. Übernimm Material, Form, Farbe, Hintergrund, Layout, Schriftart, Schriftgröße und alle sonstigen Gestaltungselemente exakt unverändert. Ändere ausschließlich den unten angegebenen Personalisierungstext bzw. das Motiv — an derselben Position, in derselben Schriftart und Größe wie im Referenzbild. Sonst darf sich nichts am Bild ändern.");
   } else if (hasUpload) {
     parts.push("Das beigefügte Bild ist die Vorlage des Kunden: das kann entweder eine komplette Vorstellung des gewünschten Endprodukts sein oder nur ein einzelnes Motiv/Logo/Schriftzug, der auf dem Produkt angebracht werden soll — erkenne selbst, welcher Fall vorliegt, und setze es entsprechend sinnvoll um.");
   }
 
-  const texts = Object.values(values).filter((v) => v && typeof v === "string");
   if (texts.length) {
-    parts.push("Bringe folgenden vom Kunden gewünschten Text gut lesbar auf dem Produkt an: " + texts.map((v) => `"${v}"`).join(", ") + ".");
+    parts.push("Der vom Kunden gewünschte Personalisierungstext lautet: " + texts.map((v) => `"${v}"`).join(", ") + ". Bringe genau diesen Text an — keinen anderen, keine zusätzlichen oder abweichenden Textzeilen.");
   }
   return parts.join(" ");
 }
