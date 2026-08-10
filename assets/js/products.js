@@ -76,41 +76,9 @@ function priceForQty(product, qty) {
   return match.price;
 }
 
-const ADVANCED_PRODUCTS = {
-  nameplate: {
-    id: "nameplate",
-    name: "Namensschild Acryl",
-    price: 16.5,
-    desc: "Zweizeiliges Türschild aus mattem Acrylglas.",
-    category: "Laser",
-    folder: null,
-    bgColor: "#F4F1E8",
-    canvas: { width: 460, height: 320 },
-    fields: [
-      { id: "text1", type: "text", label: "Name", maxLength: 20, x: 0.5, y: 0.42, size: 34, align: "center" },
-      { id: "text2", type: "text", label: "Untertitel (optional)", maxLength: 26, x: 0.5, y: 0.6, size: 18, align: "center" }
-    ]
-  },
-
-  photoengraving: {
-    id: "photoengraving",
-    name: "Foto-Gravur Holzbild",
-    price: 24.0,
-    desc: "Dein Foto als Gravur auf einer Holzplatte, mit optionaler Bildunterschrift.",
-    category: "Laser",
-    folder: null,
-    bgColor: "#E4DFD2",
-    canvas: { width: 460, height: 320 },
-    fields: [
-      {
-        id: "photo", type: "image", label: "Foto hochladen",
-        hint: "JPG oder PNG, wird auf die Holzplatte gesetzt.",
-        x: 30, y: 24, w: 400, h: 206
-      },
-      { id: "caption", type: "text", label: "Bildunterschrift (optional)", maxLength: 30, x: 0.5, y: 0.92, size: 18, align: "center" }
-    ]
-  }
-};
+// Produkte mit mehreren Feldern / Foto-Upload: hier per Hand eintragen,
+// am einfachsten per tools/designer.html erzeugen und einfügen.
+const ADVANCED_PRODUCTS = {};
 
 async function buildSimpleProduct(row) {
   const name = row["Artikelname"] || "Unbenanntes Produkt";
