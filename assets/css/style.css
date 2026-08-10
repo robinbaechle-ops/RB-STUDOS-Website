@@ -503,8 +503,13 @@ main.page .price {
   color: var(--text-muted);
 }
 
+.media-column {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
 .gallery {
-  margin-bottom: 40px;
   max-width: 500px;
 }
 
