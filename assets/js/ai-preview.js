@@ -1,12 +1,10 @@
 // KI-Bildvorschau: Foto-Upload oder Textangaben -> Cloudflare Worker ->
-// Pollinations.ai (kostenloser Open-Source-Bilddienst) -> generiertes
-// Vorschaubild. Zugangsdaten (soweit nötig) stecken nur im Worker, nie
-// hier im Browser-Code.
+// Google Gemini -> generiertes Vorschaubild. Der API-Key steckt nur im
+// Worker, nie hier im Browser-Code.
 //
 // Für ein realistisches Ergebnis wird zusätzlich immer das echte,
 // unbedruckte Produktfoto (product.image, aus dem Bildname-Ordner) als
-// Referenzbild mitgeschickt, sofern vorhanden — als öffentliche URL, da
-// es auf studio-rb.net bereits erreichbar ist (kein erneuter Upload nötig).
+// Referenzbild mitgeschickt, sofern vorhanden.
 
 const AI_WORKER_URL = "https://ai.studio-rb.net/";
 const AI_SESSION_LIMIT = 5;
@@ -36,6 +34,24 @@ function fileToBase64(file) {
     reader.onerror = () => reject(reader.error);
     reader.readAsDataURL(file);
   });
+}
+
+function urlToBase64(url) {
+  return fetch(url)
+    .then((res) => res.blob())
+    .then(
+      (blob) =>
+        new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const match = /^data:(.+);base64,(.+)$/.exec(reader.result || "");
+            resolve(match ? { mimeType: match[1], base64: match[2] } : null);
+          };
+          reader.onerror = () => resolve(null);
+          reader.readAsDataURL(blob);
+        })
+    )
+    .catch(() => null);
 }
 
 function buildAiPrompt(product, values, hasReference, hasUpload) {
@@ -89,9 +105,9 @@ function initAiPreview(product) {
 
   let lastImage = null; // { base64, mimeType } — letztes generiertes Bild, Basis für "Nochmals anpassen"
 
-  // Echtes Produktfoto als Referenz — als absolute URL, da Pollinations.ai
-  // öffentlich erreichbare Bild-URLs statt Uploads erwartet.
-  const referenceImage = product.image ? { url: new URL(product.image, window.location.href).href } : null;
+  // Echtes Produktfoto als Referenz — einmal pro Seitenaufruf als Base64
+  // laden, damit die KI es als Grundlage für ein realistisches Ergebnis nutzt.
+  const referenceImagePromise = product.image ? urlToBase64(product.image) : Promise.resolve(null);
 
   function setStatus(text, isError) {
     statusEl.hidden = !text;
@@ -132,7 +148,10 @@ function initAiPreview(product) {
 
   generateBtn.addEventListener("click", async () => {
     const file = photoInput.files[0];
-    const uploaded = file ? await fileToBase64(file) : null;
+    const [referenceImage, uploaded] = await Promise.all([
+      referenceImagePromise,
+      file ? fileToBase64(file) : Promise.resolve(null)
+    ]);
 
     const values = {};
     product.fields.forEach((field) => {
