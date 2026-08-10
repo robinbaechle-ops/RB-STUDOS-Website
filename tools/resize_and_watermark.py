@@ -2,8 +2,8 @@
 """
 Resize image folder and place watermark.
 
-This python script takes all jpg/jpeg files in a folder, resizes them and
-puts a watermark in the right lower corner. The watermark must be named
+This python script takes all jpg/jpeg/png files in a folder, resizes them
+and puts a watermark in the right lower corner. The watermark must be named
 <watermark.png> and must be located in the same folder as this script.
 
 Example:
@@ -94,6 +94,7 @@ def main():
     # Read watermark before changing working directory
     watermark_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "watermark.png")
     watermark = Image.open(watermark_path).convert("RGBA")
+    watermark_filename = os.path.basename(watermark_path).lower()
 
     # Change directory either to default or to argument
     os.chdir(args.directory)
@@ -103,9 +104,12 @@ def main():
     output_dir = os.path.join(os.getcwd(), "hp")
     os.makedirs(output_dir, exist_ok=True)
 
-    # Go through folder (no subdirs), match .jpg and .jpeg case-insensitively
+    # Go through folder (no subdirs), match .jpg/.jpeg/.png case-insensitively,
+    # skip the watermark file itself
     for filename in os.listdir():
-        if filename.lower().endswith((".jpg", ".jpeg")):
+        if filename.lower() == watermark_filename:
+            continue
+        if filename.lower().endswith((".jpg", ".jpeg", ".png")):
             resized_image = resizeImage(filename, max_side_length=1024)
             watermarked_image = addWaterMark(resized_image, watermark)
             watermarked_image.save(os.path.join(output_dir, "res_" + filename))
