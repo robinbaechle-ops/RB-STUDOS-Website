@@ -62,11 +62,11 @@ function buildAiPrompt(product, values, hasReference, hasUpload) {
   ];
 
   if (hasReference && hasUpload) {
-    parts.push("Das erste beigefügte Bild zeigt das echte, unbedruckte Produkt (Material, Form, Farbe) — nutze es als exakte Grundlage für das Ergebnis. Das zweite beigefügte Bild ist die Vorlage des Kunden für das gewünschte Motiv.");
+    parts.push("Das erste beigefügte Bild zeigt das echte, unbedruckte Produkt (Material, Form, Farbe) — nutze es als exakte Grundlage für das Ergebnis. Das zweite beigefügte Bild ist die Vorlage des Kunden: das kann entweder eine komplette Vorstellung des gewünschten Endprodukts sein oder nur ein einzelnes Motiv/Logo/Schriftzug, der auf das Produkt aus dem ersten Bild übertragen werden soll — erkenne selbst, welcher Fall vorliegt, und setze es entsprechend sinnvoll um.");
   } else if (hasReference) {
     parts.push("Das beigefügte Bild zeigt das echte, unbedruckte Produkt (Material, Form, Farbe) — nutze es als exakte Grundlage für das Ergebnis.");
   } else if (hasUpload) {
-    parts.push("Das beigefügte Bild ist die Vorlage des Kunden für das gewünschte Motiv.");
+    parts.push("Das beigefügte Bild ist die Vorlage des Kunden: das kann entweder eine komplette Vorstellung des gewünschten Endprodukts sein oder nur ein einzelnes Motiv/Logo/Schriftzug, der auf dem Produkt angebracht werden soll — erkenne selbst, welcher Fall vorliegt, und setze es entsprechend sinnvoll um.");
   }
 
   const texts = Object.values(values).filter((v) => v && typeof v === "string");
