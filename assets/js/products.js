@@ -107,14 +107,14 @@ function resolveRelatedLink(entry, products) {
   if (urlMatch) {
     const url = urlMatch[1];
     const label = entry.slice(0, urlMatch.index).replace(/:\s*$/, "").trim();
-    return { href: url, label: label || url };
+    return { href: url, label: label || url, external: true };
   }
 
   const product = products[slugify(entry)];
   if (product) {
-    return { href: `product.html?product=${product.id}`, label: product.name };
+    return { href: `product.html?product=${product.id}`, label: product.name, external: false };
   }
-  return { href: null, label: entry };
+  return { href: null, label: entry, external: false };
 }
 
 // Produkte mit mehreren Feldern / Foto-Upload: hier per Hand eintragen,

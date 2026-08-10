@@ -119,7 +119,11 @@ function renderRelated(product) {
 
   section.hidden = false;
   list.innerHTML = product.related
-    .map((r) => (r.href ? `<li><a href="${r.href}">${r.label}</a></li>` : `<li>${r.label}</li>`))
+    .map((r) => {
+      if (!r.href) return `<li>${r.label}</li>`;
+      const attrs = r.external ? ` target="_blank" rel="noopener noreferrer"` : "";
+      return `<li><a href="${r.href}"${attrs}>${r.label}</a></li>`;
+    })
     .join("");
 }
 
