@@ -735,11 +735,32 @@ main.page .price {
   border-top: 1px solid var(--border);
 }
 
-.ai-preview h2 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.3rem;
-  margin: 0 0 20px;
+.ai-preview #ai-generate-btn {
+  margin-bottom: 24px;
+}
+
+.ai-hint {
+  margin: -4px 0 4px;
+}
+
+.ai-hint summary {
+  cursor: pointer;
+  font-size: .82rem;
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ai-hint summary::marker,
+.ai-hint summary::-webkit-details-marker {
+  color: var(--accent-ink);
+}
+
+.ai-hint p {
+  margin: 10px 0 0;
+  font-size: .82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
 }
 
 .ai-status {

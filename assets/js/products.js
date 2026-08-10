@@ -145,7 +145,7 @@ async function buildSimpleProduct(row) {
     bgColor: "#E4DFD2",
     canvas: null, // wird beim Laden des Fotos auf dessen Maße gesetzt
     fields: aiEnabled
-      ? [{ id: "text1", type: "text", label: "Dein Text (optional)", maxLength: 24, x: 0.5, y: 0.5, size: 32, align: "center" }]
+      ? [{ id: "text1", type: "text", label: "Dein Text (optional)", maxLength: 60, x: 0.5, y: 0.5, size: 32, align: "center" }]
       : []
   };
 }

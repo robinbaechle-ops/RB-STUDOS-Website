@@ -295,16 +295,22 @@ async function initProductPage() {
   renderRelated(product);
   document.fonts.ready.then(() => drawPreview(product));
 
+  // Textfelder aktualisieren die Leinwand live beim Tippen (kein separater
+  // "Vorschau generieren"-Button mehr nötig).
+  product.fields.forEach((field) => {
+    if (field.type === "text") {
+      document.getElementById(field.id).addEventListener("input", () => drawPreview(product));
+    }
+  });
+
   if (product.aiEnabled) {
     initAiPreview(product);
   } else {
     document.getElementById("engrave-field").hidden = true;
-    document.getElementById("generate-btn").hidden = true;
     document.getElementById("ai-preview").hidden = true;
     document.getElementById("preview-caption").hidden = true;
   }
 
-  document.getElementById("generate-btn").addEventListener("click", () => drawPreview(product));
   document.getElementById("engrave-toggle").addEventListener("change", () => drawPreview(product));
 
   document.getElementById("order-btn").addEventListener("click", () => {
