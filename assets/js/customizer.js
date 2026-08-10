@@ -195,17 +195,6 @@ function drawText(ctx, field, value, w, h) {
   ctx.fillText(value, field.x * w, field.y * h);
 }
 
-function applyEngravePreview(ctx, w, h) {
-  const imageData = ctx.getImageData(0, 0, w, h);
-  const data = imageData.data;
-  for (let i = 0; i < data.length; i += 4) {
-    const gray = data[i] * 0.3 + data[i + 1] * 0.59 + data[i + 2] * 0.11;
-    const value = gray > 150 ? 235 : 30;
-    data[i] = data[i + 1] = data[i + 2] = value;
-  }
-  ctx.putImageData(imageData, 0, 0);
-}
-
 async function drawPreview(product) {
   const canvas = document.getElementById("preview-canvas");
   const ctx = canvas.getContext("2d");
@@ -229,10 +218,6 @@ async function drawPreview(product) {
         ctx.drawImage(toDraw, field.x, field.y, field.w, field.h);
       }
     }
-  }
-
-  if (document.getElementById("engrave-toggle").checked) {
-    applyEngravePreview(ctx, w, h);
   }
 }
 
@@ -306,12 +291,9 @@ async function initProductPage() {
   if (product.aiEnabled) {
     initAiPreview(product);
   } else {
-    document.getElementById("engrave-field").hidden = true;
     document.getElementById("ai-preview").hidden = true;
     document.getElementById("preview-caption").hidden = true;
   }
-
-  document.getElementById("engrave-toggle").addEventListener("change", () => drawPreview(product));
 
   document.getElementById("order-btn").addEventListener("click", () => {
     sessionStorage.setItem("rbstudio-order", JSON.stringify(collectOrder(product)));

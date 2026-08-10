@@ -712,16 +712,6 @@ main.page .price {
   border-color: var(--accent);
 }
 
-.checkbox-field {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 28px 0;
-  font-family: var(--font-body);
-  font-size: .88rem;
-  accent-color: var(--accent);
-}
-
 .actions {
   display: flex;
   gap: 12px;
