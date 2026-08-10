@@ -74,11 +74,14 @@ async function handleAiGenerate(request, env) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ contents: [{ parts }] }),
     });
-  } catch {
+  } catch (err) {
+    console.error("Gemini fetch fehlgeschlagen:", err);
     return jsonResponse({ error: "KI-Dienst nicht erreichbar." }, 502);
   }
 
   if (!geminiResponse.ok) {
+    const errText = await geminiResponse.text();
+    console.error("Gemini-Fehlerantwort:", geminiResponse.status, errText);
     return jsonResponse({ error: "KI-Dienst hat einen Fehler gemeldet." }, 502);
   }
 
@@ -88,6 +91,7 @@ async function handleAiGenerate(request, env) {
   const inline = imagePart?.inline_data || imagePart?.inlineData;
 
   if (!inline) {
+    console.error("Keine Bilddaten in Gemini-Antwort:", JSON.stringify(data));
     return jsonResponse({ error: "Die KI hat kein Bild zurückgegeben." }, 502);
   }
 
