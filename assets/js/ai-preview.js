@@ -137,6 +137,9 @@ function initAiPreview(product) {
       aiRegisterGeneration();
       lastImage = { base64: data.imageBase64, mimeType: data.mimeType || "image/png" };
       resultImg.src = `data:${lastImage.mimeType};base64,${lastImage.base64}`;
+      resultImg.hidden = false;
+      document.getElementById("preview-panel").hidden = false;
+      document.getElementById("preview-caption").hidden = false;
       resultBox.hidden = false;
       setStatus("");
     } catch (err) {

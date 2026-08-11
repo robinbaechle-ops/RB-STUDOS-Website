@@ -262,37 +262,34 @@ async function initProductPage() {
   updatePriceDisplay(product);
   document.getElementById("qty").addEventListener("input", () => updatePriceDisplay(product));
 
-  // Fester 4:3-Rahmen für alle Produkte — drawBackground() croppt jedes
-  // Foto per "cover" hinein, egal welches Seitenverhältnis das Original hat.
-  if (!product.canvas) {
-    product.canvas = DEFAULT_CANVAS;
-  }
-
-  const canvas = document.getElementById("preview-canvas");
-  canvas.width = product.canvas.width;
-  canvas.height = product.canvas.height;
-
   if (product.folder) {
     loadProductGallery(product.folder).then(renderGallery);
   }
 
   renderFields(product);
   renderRelated(product);
-  document.fonts.ready.then(() => drawPreview(product));
-
-  // Textfelder aktualisieren die Leinwand live beim Tippen (kein separater
-  // "Vorschau generieren"-Button mehr nötig).
-  product.fields.forEach((field) => {
-    if (field.type === "text") {
-      document.getElementById(field.id).addEventListener("input", () => drawPreview(product));
-    }
-  });
 
   if (product.aiEnabled) {
+    // Vorschau-Panel bleibt zunächst leer: ein generisches Text-Overlay auf
+    // dem Referenzfoto würde bei den meisten Produkten (Position, Schriftart,
+    // Layout des echten Motivs) ohnehin nicht zum tatsächlichen Design
+    // passen. Es zeigt erst etwas, sobald eine KI-Vorschau erzeugt wurde
+    // (siehe ai-preview.js).
     initAiPreview(product);
   } else {
     document.getElementById("ai-preview").hidden = true;
-    document.getElementById("preview-caption").hidden = true;
+
+    // Fester 4:3-Rahmen — drawBackground() croppt jedes Foto per "cover"
+    // hinein, egal welches Seitenverhältnis das Original hat.
+    if (!product.canvas) {
+      product.canvas = DEFAULT_CANVAS;
+    }
+    const canvas = document.getElementById("preview-canvas");
+    canvas.width = product.canvas.width;
+    canvas.height = product.canvas.height;
+    canvas.hidden = false;
+    document.getElementById("preview-panel").hidden = false;
+    document.fonts.ready.then(() => drawPreview(product));
   }
 
   document.getElementById("order-btn").addEventListener("click", () => {

@@ -49,9 +49,10 @@
           <div class="gallery-thumbs" id="gallery-thumbs"></div>
         </section>
 
-        <section class="preview-panel">
-          <canvas id="preview-canvas"></canvas>
-          <p class="preview-caption" id="preview-caption">Live-Vorschau deines Motivs. Für die endgültige Datei wird daraus automatisch die Gravurdatei erzeugt.</p>
+        <section class="preview-panel" id="preview-panel" hidden>
+          <canvas id="preview-canvas" hidden></canvas>
+          <img id="ai-result-img" alt="KI-generierte Vorschau" hidden>
+          <p class="preview-caption" id="preview-caption" hidden>KI-generierte Vorschau deines Motivs. Für die endgültige Datei wird daraus automatisch die Gravurdatei erzeugt.</p>
         </section>
       </div>
 
@@ -84,7 +85,6 @@
           <p class="ai-status" id="ai-status" hidden></p>
 
           <div class="ai-result" id="ai-result" hidden>
-            <img id="ai-result-img" alt="KI-generierte Vorschau">
             <div class="actions">
               <button class="btn primary" id="ai-good-btn" type="button">Gut</button>
               <button class="btn" id="ai-refine-btn" type="button">Nochmals anpassen</button>

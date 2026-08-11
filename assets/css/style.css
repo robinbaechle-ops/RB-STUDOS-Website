@@ -575,7 +575,8 @@ main.page .price {
   overflow: hidden;
 }
 
-.preview-panel canvas {
+.preview-panel canvas,
+.preview-panel img {
   width: 100%;
   height: auto;
   display: block;
@@ -765,14 +766,6 @@ main.page .price {
 
 .ai-result {
   margin-top: 20px;
-}
-
-.ai-result img {
-  width: 100%;
-  max-width: 420px;
-  border-radius: var(--radius-lg);
-  display: block;
-  margin-bottom: 16px;
 }
 
 .ai-refine {
