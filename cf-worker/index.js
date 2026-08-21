@@ -5,10 +5,10 @@
 //    ruft Google Gemini auf, gibt das generierte Bild zurück.
 // 2. "/print-request": 3D-Druck-Preisanfrage — nimmt Kontaktdaten + eine
 //    hochgeladene 3D-Datei entgegen und leitet sie per E-Mail (Resend) an
-//    info@studio-rb.net weiter.
+//    robinbaechle@googlemail.com weiter.
 
 const ALLOWED_ORIGIN = "https://studio-rb.net";
-const NOTIFY_EMAIL = "info@studio-rb.net";
+const NOTIFY_EMAIL = "robinbaechle@googlemail.com";
 
 const GEMINI_MODEL = "gemini-2.5-flash-image";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;

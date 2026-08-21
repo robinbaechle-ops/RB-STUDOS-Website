@@ -35,7 +35,7 @@ Der Worker-Code wurde erweitert (neue Funktion `/print-request`). Du musst die a
 
 1. Öffne `studio-rb.net/3d-druck.html`, scroll zu "Eigene 3D-Datei hochladen & Preis anfragen".
 2. Fülle Name, E-Mail aus, wähle eine kleine Testdatei (z. B. eine kleine STL-Datei) und klicke **"Anfrage senden"**.
-3. Nach kurzer Zeit sollte "Danke! Wir melden uns mit einem Preisangebot." erscheinen — und du solltest eine E-Mail mit der Datei im Anhang an `info@studio-rb.net` bekommen.
+3. Nach kurzer Zeit sollte "Danke! Wir melden uns mit einem Preisangebot." erscheinen — und du solltest eine E-Mail mit der Datei im Anhang an `robinbaechle@googlemail.com` bekommen.
 
 Falls eine Fehlermeldung erscheint: meist liegt es an der DNS-Verifizierung in Resend (Schritt 1, kann etwas dauern) oder am fehlenden/falschen Secret (Schritt 4). Schick mir die Fehlermeldung, nie den API-Key.
 
