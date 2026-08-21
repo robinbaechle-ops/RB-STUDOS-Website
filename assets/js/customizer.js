@@ -270,6 +270,11 @@ async function initProductPage() {
 
   document.title = `${product.name} individualisieren`;
   document.getElementById("product-name").textContent = product.name;
+  const descEl = document.getElementById("product-desc");
+  if (product.desc) {
+    descEl.textContent = product.desc;
+    descEl.hidden = false;
+  }
   renderTierTable(product);
   renderStockNote(product);
   updatePriceDisplay(product);
