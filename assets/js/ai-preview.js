@@ -106,9 +106,16 @@ function initAiPreview(product) {
 
   let lastImage = null; // { base64, mimeType } — letztes generiertes Bild, Basis für "Nochmals anpassen"
 
-  // Echtes Produktfoto als Referenz — einmal pro Seitenaufruf als Base64
-  // laden, damit die KI es als Grundlage für ein realistisches Ergebnis nutzt.
-  const referenceImagePromise = product.image ? urlToBase64(product.image) : Promise.resolve(null);
+  // Referenzfoto für die KI: das in der Galerie ausgewählte Motiv (falls der
+  // Kunde eines gewählt hat), sonst das Standard-Produktfoto. Wird bei jeder
+  // Generierung neu ermittelt, damit ein Wechsel der Galerie-Auswahl greift.
+  function getReferenceImageUrl() {
+    if (typeof getSelectedGalleryImage === "function") {
+      const selected = getSelectedGalleryImage();
+      if (selected) return selected;
+    }
+    return product.image || null;
+  }
 
   function setStatus(text, isError) {
     statusEl.hidden = !text;
@@ -152,8 +159,9 @@ function initAiPreview(product) {
 
   generateBtn.addEventListener("click", async () => {
     const file = photoInput.files[0];
+    const referenceUrl = getReferenceImageUrl();
     const [referenceImage, uploaded] = await Promise.all([
-      referenceImagePromise,
+      referenceUrl ? urlToBase64(referenceUrl) : Promise.resolve(null),
       file ? fileToBase64(file) : Promise.resolve(null)
     ]);
 

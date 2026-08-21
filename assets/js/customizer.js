@@ -36,10 +36,11 @@ function drawBackground(ctx, w, h, product, bgImage) {
   }
 }
 
-function renderGallery(images) {
+function renderGallery(images, aiEnabled) {
   const gallery = document.getElementById("product-gallery");
   const main = document.getElementById("gallery-main");
   const thumbs = document.getElementById("gallery-thumbs");
+  const hint = document.getElementById("gallery-hint");
   if (!gallery) return;
 
   if (!images.length) {
@@ -54,10 +55,12 @@ function renderGallery(images) {
 
   if (images.length === 1) {
     thumbs.hidden = true;
+    if (hint) hint.hidden = true;
     return;
   }
 
   thumbs.hidden = false;
+  if (hint) hint.hidden = !aiEnabled;
   images.forEach((src, i) => {
     const btn = document.createElement("button");
     btn.type = "button";
@@ -70,6 +73,16 @@ function renderGallery(images) {
     });
     thumbs.appendChild(btn);
   });
+}
+
+// Liefert das aktuell in der Galerie ausgewählte Foto (Motiv), das die
+// KI-Vorschau als Ausgangspunkt nutzen soll — oder null, wenn keine Galerie
+// vorhanden ist (dann greift in ai-preview.js der Fallback product.image).
+function getSelectedGalleryImage() {
+  const gallery = document.getElementById("product-gallery");
+  const main = document.getElementById("gallery-main");
+  if (!gallery || gallery.hidden || !main) return null;
+  return main.getAttribute("src") || null;
 }
 
 function renderTierTable(product) {
@@ -263,7 +276,7 @@ async function initProductPage() {
   document.getElementById("qty").addEventListener("input", () => updatePriceDisplay(product));
 
   if (product.folder) {
-    loadProductGallery(product.folder).then(renderGallery);
+    loadProductGallery(product.folder).then((images) => renderGallery(images, product.aiEnabled));
   }
 
   renderFields(product);
